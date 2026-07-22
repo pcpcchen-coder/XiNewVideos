@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Node
+node_modules/
+
+# OS / editor
+.DS_Store
+*.swp
+
+# Pipeline scratch / intermediates (regenerable)
+**/_*.mp4
+**/_*.m4a
+**/_concat.txt
+**/temp/
+*.log
+
+# Keep finished deliverables tracked:
+#   videos/*/slides, subtitles, video.mp4, video_sub.mp4, thumbnail.jpg
