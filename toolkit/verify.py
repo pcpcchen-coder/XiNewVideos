@@ -50,14 +50,15 @@ def main(vdir):
         if fn and not (ROOT/"assets"/"instructor"/fn).exists(): missing_av.append(fn)
     ok(not missing_av, "講師姿勢圖存在", ",".join(missing_av))
 
-    srt = vdir/"subtitles"/"subtitles.srt"; ass = vdir/"subtitles"/"subtitles.ass"
-    ok(srt.exists() and srt.stat().st_size>0, "字幕 SRT 存在")
-    ok(ass.exists() and ass.stat().st_size>0, "字幕 ASS 存在")
+    srt = vdir/"subtitles"/"subtitles.srt"
+    ok(srt.exists() and srt.stat().st_size>0, "字幕 SRT 存在（YouTube 側載用）")
     cues = len(re.findall(r"-->", srt.read_text(encoding="utf-8"))) if srt.exists() else 0
     ok(cues>=N, "字幕句數合理", f"{cues} cues")
 
     total = sum(durations)
-    for name in ["video.mp4","video_sub.mp4"]:
+    # video.mp4 (clean) is the deliverable; video_sub.mp4 only if someone ran --burn
+    names = ["video.mp4"] + (["video_sub.mp4"] if (vdir/"video_sub.mp4").exists() else [])
+    for name in names:
         p = vdir/name
         ok(p.exists(), f"{name} 存在")
         if p.exists():

@@ -19,7 +19,7 @@
     "tailSeconds": 0.8,
     "note": "mode=estimated 時，投影片時長由旁白字數推算(無語音)；mode=audio 時改用實際配音長度。"
   },
-  "subtitles": { "maxCharsPerLine": 18, "position": "lower-third" },
+  "subtitles": { "maxCharsPerLine": 18, "format": "srt", "burn": false, "delivery": "youtube-sidecar" },
   "tools": {
     "ffmpeg": "ffmpeg",
     "fontFamily": "Noto Sans TC",

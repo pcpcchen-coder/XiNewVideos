@@ -34,15 +34,19 @@ python3 toolkit/tts.py $V
 # 3. 產投影片（HTML → 1920×1080 PNG）
 python3 toolkit/render_slides.py $V
 
-# 4. 字幕 + 時長（有配音就用真實長度，否則依字數推算；輸出 SRT/ASS + slide_durations.json）
+# 4. 字幕 + 時長（有配音就用真實長度，否則依字數推算；輸出 SRT + slide_durations.json）
 python3 toolkit/build_subtitles.py $V
 
-# 5. 組裝 + 燒字幕 + 封面（video.mp4 → video_sub.mp4 → thumbnail.jpg）
+# 5. 組裝 + 封面（乾淨 video.mp4 + thumbnail.jpg；字幕以 SRT 側載，預設不燒）
 python3 toolkit/assemble.py $V
+#    需要硬燒字幕的版本再加 --burn（產出 video_sub.mp4）：
+#    python3 toolkit/assemble.py $V --burn
 
 # 驗收（全 PASS 才交付）
 python3 toolkit/verify.py $V
 ```
+
+> **交付物 = `video.mp4`（乾淨）＋ `subtitles/subtitles.srt`**。上 YouTube 時：影片傳 `video.mp4`，字幕在「字幕 → 上傳檔案」載入那支 SRT。字幕**不燒進畫面**。
 
 或一鍵： `bash toolkit/build_episode.sh $V`
 
@@ -51,8 +55,8 @@ python3 toolkit/verify.py $V
 |---|---|
 | Lint | 0 ERROR（缺字、未結尾標點會擋） |
 | 投影片 | 張數 == 旁白段數，每張 1920×1080 |
-| 字幕 | 只在標點斷句、不切詞 |
-| 組裝 | `video_sub.mp4` decode test 無錯、片長 ≈ 各段總和 |
+| 字幕 | 只在標點斷句、不切詞；輸出 `subtitles.srt` |
+| 組裝 | `video.mp4` decode test 無錯、片長 ≈ 各段總和 |
 | 驗收 | `verify.py` 全 PASS（第一集為 16/16） |
 
 ## 設計小抄

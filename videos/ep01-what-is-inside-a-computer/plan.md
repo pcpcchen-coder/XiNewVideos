@@ -8,5 +8,5 @@
 - **內容**：開箱主機，輸入 / 處理 / 記憶 / 儲存 / 輸出，10 張投影片、約 4 分 15 秒。
 - **聽眾**：國中生（比喻低齡化、鼓勵語氣）。
 - **產線**：本環境版（HTML 投影片 + edge-tts + imageio-ffmpeg），見 `docs/`。
-- **配音**：edge-tts `zh-TW-YunJheNeural`；本沙盒主機被封鎖，先出「無語音 + 燒字幕」版。
+- **配音／字幕**：edge-tts `zh-TW-YunJheNeural`；本沙盒主機被封鎖，`video.mp4` 先無語音，字幕以 `subtitles/subtitles.srt` 側載（上 YouTube 用、不燒進畫面）。本機補語音見 `docs/LOCAL-VOICEOVER.md`。
 - **驗收**：`toolkit/verify.py` → 16/16 PASS。

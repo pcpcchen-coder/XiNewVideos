@@ -1,21 +1,32 @@
 #!/usr/bin/env python3
-"""Assemble slides (+ optional audio) into the final video, then burn subtitles.
+"""Assemble slides (+ optional audio) into the final video.
 
-Replaces the Kimi/ffmpeg sandbox scripts. Uses the static ffmpeg from
-imageio-ffmpeg (johnvansickle build) — full libx264 / aac / libass.
+Uses the static ffmpeg from imageio-ffmpeg (johnvansickle build) — full
+libx264 / aac / libass.
 
-Outputs:
-  video.mp4       slides with crossfades (+ audio if present, else silent track)
-  video_sub.mp4   ^ with burned-in Traditional-Chinese subtitles (main deliverable)
+Default output (YouTube-ready):
+  video.mp4       clean slides (+ audio if present, else silent track) — MAIN deliverable
   thumbnail.jpg   1280x720 cover
+Subtitles are delivered as a sidecar SRT (see build_subtitles.py) — upload it to
+YouTube, do NOT burn it in.
 
-Usage: python3 toolkit/assemble.py videos/<episode>/
+Optional:
+  --burn          also produce video_sub.mp4 with hard-burned subtitles
+                  (styled from subtitles.srt via libass force_style)
+
+Usage: python3 toolkit/assemble.py videos/<episode>/ [--burn]
 """
-import json, os, subprocess, sys, glob
+import json, subprocess, sys, glob
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 FONTS = ROOT/"brand"/"fonts"
+
+# libass style for the optional hardsub (cream text in a semi-transparent box,
+# lower-third, kept clear of the bottom-right instructor avatar).
+BURN_STYLE = ("Fontname=Noto Sans TC,Fontsize=52,Bold=1,PrimaryColour=&H00D7EAF2,"
+              "BorderStyle=3,Outline=14,Shadow=0,BackColour=&H8C2E1D0B,"
+              "Alignment=2,MarginL=110,MarginR=470,MarginV=92")
 
 def ff(*a):
     cmd = ["ffmpeg","-y","-hide_banner","-loglevel","error",*a]
@@ -26,7 +37,7 @@ def ff(*a):
 def have_audio(vdir, n):
     return all((vdir/"audio"/f"slide_{i+1:02d}.mp3").exists() for i in range(n))
 
-def main(vdir):
+def main(vdir, burn=False):
     vdir = Path(vdir)
     durations = json.loads((vdir/"slide_durations.json").read_text())
     slides = sorted(glob.glob(str(vdir/"slides"/"slide_*.png")))
@@ -36,7 +47,7 @@ def main(vdir):
     total = sum(durations)
 
     # ---------- build video with exact hard cuts (concat demuxer) ----------
-    # Hard cuts keep the timeline exact so subtitles (and per-segment audio) stay
+    # Hard cuts keep the timeline exact so the SRT (and per-segment audio) stay
     # perfectly aligned to each slide. A global fade in/out softens the ends.
     listf = vdir/"_concat.txt"
     lines = []
@@ -55,7 +66,6 @@ def main(vdir):
 
     video = vdir/"video.mp4"
     if audio:
-        # concat the per-slide mp3s into one track
         concat = "|".join(str(vdir/"audio"/f"slide_{i+1:02d}.mp3") for i in range(n))
         aud = vdir/"_audio.m4a"
         ff("-i", f"concat:{concat}", "-c:a","aac","-b:a","192k", str(aud))
@@ -69,20 +79,26 @@ def main(vdir):
            "-c:v","copy","-c:a","aac","-shortest","-movflags","+faststart", str(video))
     tmp.unlink(missing_ok=True)
 
-    # ---------- burn subtitles ----------
-    ass = vdir/"subtitles"/"subtitles.ass"
-    video_sub = vdir/"video_sub.mp4"
-    vf = f"subtitles={ass.as_posix()}:fontsdir={FONTS.as_posix()}"
-    ff("-i",str(video),"-vf",vf,"-c:v","libx264","-preset","medium","-crf","20",
-       "-c:a","copy","-pix_fmt","yuv420p","-movflags","+faststart", str(video_sub))
-
     # ---------- thumbnail ----------
     ff("-i",slides[0],"-vf","scale=1280:720","-frames:v","1","-q:v","3",
        str(vdir/"thumbnail.jpg"))
 
-    print(f"audio={'yes' if audio else 'SILENT (TTS host blocked in sandbox)'}  total={total:.1f}s")
-    for f in ["video.mp4","video_sub.mp4","thumbnail.jpg"]:
+    outputs = ["video.mp4","thumbnail.jpg"]
+
+    # ---------- optional: hard-burned subtitle copy ----------
+    if burn:
+        srt = (vdir/"subtitles"/"subtitles.srt").as_posix()
+        vf = f"subtitles={srt}:fontsdir={FONTS.as_posix()}:force_style={BURN_STYLE}"
+        ff("-i",str(video),"-vf",vf,"-c:v","libx264","-preset","medium","-crf","20",
+           "-c:a","copy","-pix_fmt","yuv420p","-movflags","+faststart", str(vdir/"video_sub.mp4"))
+        outputs.append("video_sub.mp4")
+
+    print(f"audio={'yes' if audio else 'SILENT (add voice with toolkit/tts.py in a TTS-reachable env)'}"
+          f"  burn={'yes' if burn else 'no (sidecar SRT for YouTube)'}  total={total:.1f}s")
+    for f in outputs:
         p = vdir/f; print(f"  ✓ {f}  ({p.stat().st_size//1024} KB)")
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv)>1 else "videos/ep01-what-is-inside-a-computer")
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    burn = "--burn" in sys.argv
+    main(args[0] if args else "videos/ep01-what-is-inside-a-computer", burn=burn)
