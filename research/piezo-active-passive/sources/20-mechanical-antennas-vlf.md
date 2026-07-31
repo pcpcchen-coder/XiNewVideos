@@ -1,196 +1,262 @@
 # 應用B6：機械天線與 VLF/ULF 通訊——壓電體同時是共振器與電磁輻射源
 
-> 一句話結論：機械天線是本次調查中**物理上最正當、最無法被磁性元件取代**的「新能力型」壓電應用（它繞過的是 Chu–Harrington 與 Bode–Fano 這兩條電小天線的基本極限，不是在跟電感比成本），但它同時是**離產品最遠**的一條——已發表成果的輻射功率停在 nW–µW 等級、資料率 bps 等級、通訊距離數十至數百公尺，距離「取代 MW 級陸基 VLF 台」還差 9–12 個數量級；對台灣的技術決策者而言，這是一條「押注國防／特種通訊、10 年期、需國家級客戶」的路，不是消費電子路線。
+> 一句話結論：機械天線是本次調查中**物理上最正當、最不可能被磁性元件取代**的「新能力型」壓電應用（它繞過的是 Chu–Harrington 與 Bode–Fano 兩條電小天線基本極限，不是在跟電感比成本），奠基文獻與驚人數字這次**全部查證屬實**；但同一批查證也揭露了三件致命事實：(1) 已公開的最佳實測鏈路是 **200–730 m、數 bps 至數十 bps**，且多半落在**近場磁感應**而非真正輻射；(2) DARPA AMEBA **已於 FY2021 結案且無公開後續型號**；(3) 2026 年 4 月的獨立理論分析指出機械天線**已逼近理論 FOM 上限，質疑「還能再進步數個數量級」的說法**。對台灣決策者：**發射端是 10 年期國防押注；真正該先做的是接收/感測端（Plan A）。**
 
 ---
 
 ## 0. 研究方法與限制（誠實揭露）
 
-**本回合的重大限制，請先讀完再看下文：**
-
-1. **WebFetch 在本環境被 egress policy 全面封鎖**（任何 URL 回 403），無法讀取原文 PDF。此為既定條件。
-2. **更嚴重：本 session 的 WebSearch 配額在我這一輪開始前已被耗盡（200/200）。** 我實際只成功執行了 **1 次** 搜尋（關於 Nature Communications 磁電天線論文），第 2 次起全部回傳 `web search budget exhausted`。原任務要求的 25–35 次查詢**沒有執行**。
-3. 因此本文件的內容分為三類，**每一條都已標註**：
-   - **【已驗證】**：來自該次成功搜尋的回傳結果（標題、URL、期刊卷期），可交叉對照第 7 節來源清單。
-   - **【未驗證—模型記憶】**：來自我的內部知識，**本回合無法以任何工具查證**。這類內容**必須由人工複核後才可引用**，我在每條後面附上「建議查證關鍵字」。
-   - **【自行推算】**：由公開物理公式與明示假設推導，讀者可自行複核算式；非引用任何文獻數字。
-4. **我沒有捏造任何專利號、論文標題、公司名或數字。** 凡我不確定的具體數值（DARPA 預算、確切合約金額、確切輻射功率），我一律寫「查無／未能驗證」而不填數字。
-5. **強烈建議**：在 `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION` 提高後重跑本題，優先查證第 6 節列出的 12 個待驗證項目。
+1. **WebFetch 在本環境被全面封鎖（403）**，無法讀取任何原文 PDF。本文所有事實均來自 **WebSearch 回傳的摘要文字 + 該摘要所附的來源 URL**。
+2. 本回合實際執行 **28 次成功 WebSearch**（第 29 次起配額耗盡）。相較前一版只有 1 次搜尋，本版**推翻並修正了前版多處錯誤**，並補齊了前版完全空白的實測硬指標。
+3. 標記方式：
+   - **【摘要驗證】**：由本回合搜尋摘要取得，且能對應到第 7 節具名 URL。**未經原文核對**（WebFetch 封鎖），引用前建議人工開啟該 URL 確認。
+   - **【自行推算】**：由公開物理公式與明示假設推導，算式列於附錄，讀者可自行複核。
+   - **【查無】**：本回合搜尋不到，明確不填數字。
+4. **本文未捏造任何專利號、論文標題、作者名、公司名或數字。**
+5. **本回合仍查無的項目（誠實列出）**：AMEBA 的預算金額與完整承包商名單；Kemp 2019 裝置的絕對輻射功率（W 或 dBm）與絕對場強數值；任何機械天線的商用產品型號或報價；US 10,921,360 的完整 claim 範圍（僅取得摘要式描述與 Justia 列出的權利人）；BlueME 的確切實測資料率（見第 5 節的資料矛盾說明）。
 
 ---
 
-## 1. 結論摘要
+## 1. 結論摘要（8 條）
 
-1. **【已驗證】核心論文的年份與此前的假設不同。** 任務描述寫「Nature Communications 2019 磁電天線」，實際上是 **Nature Communications 卷 8、文章編號 296、2017 年**：*Acoustically actuated ultra-compact NEMS magnetoelectric antennas*（PubMed ID 28831042）。這篇是磁電（magnetoelectric, ME）機械天線的奠基論文，核心宣稱為：懸浮的**鐵磁／壓電薄膜異質結構**，在其**聲學共振頻率**收發電磁波；天線尺寸小到 **1/1000 波長**，相較當時最先進的小型天線達到 **1–2 個數量級的微縮**，且宣稱無性能劣化。這是「同一顆壓電體既是共振器、又是輻射源」最權威的文獻依據。（來源 1、2、3）
+1. **【摘要驗證】前版標為「未驗證—模型記憶」的那組驚人數字，這次全部查證屬實，且來源比預期更硬。** 論文為 **Kemp, M.A., Franzi, M., Haase, A. et al., "A high Q piezoelectric resonator as a portable VLF transmitter", Nature Communications 10, 1715 (2019)**，機構為 **SLAC National Accelerator Laboratory + Gooch & Housego + SRI International**。核心數字：**LiNbO₃ Y∠36° 切**（降伏應力 >50 MPa、長度伸縮模態本徵損耗極低）、**9.6 cm 長棒**、**載波 35 kHz**、**機械 Q = 45,000**、**輻射效率較同電尺寸先前技術 >300 倍**、**以共振的時變調變使裝置頻寬超過 Bode–Fano 上限 >83 倍**。SLAC 內部專案代號 **VAPOR（VLF Antenna Piezoelectric Resonator）**。（來源 3、4、5、6、7）
 
-2. **【已驗證】該團隊的路線在後續論文中明確走向「主動／被動兩用」，正好命中客戶的命題。** Nature Communications 2021 的 *Ultra-compact dual-band smart NEMS magnetoelectric antennas for simultaneous wireless energy harvesting and magnetic field sensing*——**同一顆元件同時做無線能量擷取（被動取能）與磁場感測（主動感測）**。這是「壓電主動/被動兩用元件」在文獻上最直接的存在證明，且不是 DC-DC 取代電感那條被排除的路線。（來源 4）
+2. **【摘要驗證】前版對 2017 奠基論文的理解有一處重大錯誤，必須修正：那篇不是 VLF 元件。** Nature Communications 8, 296 (2017)《Acoustically actuated ultra-compact NEMS magnetoelectric antennas》（Northeastern, Nian-Xiang Sun 團隊，第一作者 Nan / Lin）的實測頻段是 **60 MHz 至 2.5 GHz**：NPR 模態 **f = 60.68 MHz、Q = 930、k_t² = 1.35%**，材料為 **500 nm AlN 壓電層 + [FeGaB(45 nm)/Al₂O₃(5 nm)]×10 磁致伸縮層**懸浮於 Si。宣稱**尺寸微縮 1–2 個數量級、小至 1/1000 波長、阻抗匹配不再直接決定輻射效率**。**它是「聲共振即天線」這個概念的奠基論文，但 VLF 磁電天線是後來另一條分支**（Northeastern 另有 VLF 專利與後續系統論文）。（來源 1、2、43、52）
 
-3. **【已驗證】這個領域 2025 年仍在 Nature Communications 級別出論文，且往「跨介質（水／空氣）行動通訊」走。** 2025 年有 *A wearable, ultrasonically-actuated magnetic-dipole rotating resonator for mobile communication in cross-medium environment*（Nat Commun, s41467-025-59539-y）——**穿戴式、超音波驅動的旋轉磁偶極共振器，用於跨介質行動通訊**。這同時證明：(a) 領域活躍未死；(b) **主流已從「純壓電電偶極」偏向「機械驅動磁偶極」**（見第 5 節的反面證據）。（來源 5）
+3. **【摘要驗證】DARPA AMEBA 已結案，且證據指向「未達可轉移門檻」。** 全名 **A MEchanically Based Antenna**，DARPA **MTO**，PM **Troy Olsson**，BAA 編號 **HR001117S0007**，2016 年 12 月公布，**45 個月**期程，分兩個技術領域（TA1：ULF <3 kHz；TA2：VLF 3–30 kHz），目標是**單兵可攜**的 VLF/ULF 發射機。已查證的承包商：**HRL Laboratories（2017-11 獲獎，走磁彈性/磁致伸縮路線，約 1 kHz）**、**University of Illinois（Tawfick 團隊，磁性共振器）**。**DARPA FY2022 預算辯護文件記載 AMEBA 於 FY2021 完成（completed）**，FY2022 經費下降即反映此事。**預算金額、完整承包商名單：查無。後續型號、軍種接手、技轉紀錄：查無。**（來源 11、12、13、14、15）
 
-4. **【未驗證—模型記憶】壓電式 VLF 發射機（LiNbO₃ Y∠36° 切）的那組驚人數字，我無法在本回合驗證。** 我的記憶指向：SLAC / Stanford 體系，第一作者姓 Kemp，Nature Communications 2019，工作頻率約 35 kHz 級，宣稱**輻射效率較同電尺寸先前技術高 >300 倍**、以**共振的時變（time-varying resonance）調變**使頻寬超過 Bode–Fano 上限約 **83 倍**。**這些全部是待查證項，不可直接引用。** 建議查證關鍵字：`Kemp piezoelectric VLF transmitter Nature Communications 2019`、`high-Q piezoelectric resonator portable VLF transmitter`、`time-varying resonance exceed Bode-Fano limit antenna`、`lithium niobate 36 degree Y-cut VLF antenna`。
+4. **【摘要驗證】最重要的空白補上了：實測鏈路數字存在，但只有 200–730 m / 數 bps–數十 bps 等級。**
+   - **BlueME（University of Florida，arXiv 2411.09241，IEEE J. Oceanic Eng.）**：Metglas + PZT 磁電天線，約 **35–36 kHz**，裝在 ASV 與 ROV 上做**開放水域實測**——**淡水 200 m 僅耗 1 W；鹹水 730 m 耗 <10 W**。（來源 20、21）
+   - **ADMIRE（UIUC, Hassanien / Gong, Sci Rep 10, 17006 (2020)）**：**PZT** 發射器效率為同尺寸電天線的 **>6000 倍**，**FSK 調變達 60 bit/s**——**這是純壓電路線目前公開最高的資料率**。（來源 9、10）
+   - **RMBMA（西安電子科技大學，電子裝備結構設計教育部重點實驗室）**：**10 cm × 5 cm × 2 cm 永磁**，產生 **1 pT** 場，通訊距離**土壤中 264.8 m、海水中 203.5 m**。（來源 16）
+   - **中國最佳化旋轉永磁**：複雜電磁環境下 **20 m 內 3.5 bps** 符元率。（來源 18、19）
+   - **磁擺陣列（Sci Rep 9, 13220 (2019)）**：效率較裸線圈高 **7 dB**，**1031 Hz、2 bps** 概念驗證。（來源 26）
+   - **Nat Commun 16, 4137 (2025) UA-MDRR**（超音波驅動旋轉磁偶極）：**0.11 cm³ 多層壓電陶瓷**驅動 NdFeB 圓盤，**100 m 處空氣中 2.64 pT、水下 2.12 pT，耗電僅 0.61 W**，發射能力密度 **24,000 nT/cm³@1 m**，宣稱優於現有共振器/天線 1–2 個數量級。（來源 24）
 
-5. **【未驗證—模型記憶】DARPA AMEBA（A MEchanically Based Antenna）** 屬 DARPA MTO，目標是把 **ULF（0.3–3 kHz）與 VLF（3–30 kHz）** 發射機做成**可攜／單兵可背**的尺寸，用於水下、地下、與 GPS 阻斷環境。**預算金額、參與團隊完整名單、是否進入 Phase 2、是否結案——本回合一律查無，不填數字。** 建議查證關鍵字：`DARPA AMEBA mechanically based antenna`、`Troy Olsson DARPA AMEBA program manager`、`AMEBA BAA HR001117`、`AMEBA phase 2 results`。
+5. **【自行推算 — 本文最關鍵的分析結論】這些「通訊距離」絕大多數不是輻射，是近場磁感應（B ∝ 1/r³）。** 以 UA-MDRR 為例：由 100 m 處 2.64 pT 反推磁偶極矩 m ≈ **13 A·m²**（近場軸向公式 B = μ₀m/2πr³）；若工作頻率取 ELF 100 Hz，代入 P = μ₀ω⁴m²/(12πc³)，得**輻射功率約 3×10⁻²¹ W**，相對 0.61 W 輸入即**輻射效率約 10⁻²¹**。ELF 100 Hz 的 λ = 3000 km，100 m 處的 r/λ = 3.3×10⁻⁵，**深在近場**。**商業意涵極為殘酷：近場鏈路的距離每加倍需要 8 倍磁矩，射程無法靠工程迭代拉開。** 這比第 5 節任何一條反面證據都更決定商業可行性。
+   **同一套推算對 BlueME 也給出一個必須追問的矛盾**：35 kHz 在海水（σ=4 S/m）的趨膚深度僅 **1.35 m**，730 m 全程走海水等於 **~4700 dB** 衰減，物理上不可能；**因此 730 m 那條鏈路幾乎必然是經由空氣/海面側向波路徑，不是穿海水**。而淡水（σ≈0.01 S/m）35 kHz 的 δ ≈ **26.9 m**，200 m ≈ 7.4 δ ≈ **64 dB**，穿水是合理的。**這說明「鹹水 730 m」與「淡水 200 m」不是同一種鏈路，不可並列引用。**（推算，非文獻宣稱；建議以原文 Fig. 實測幾何複核）
 
-6. **【自行推算】物理上「為什麼以前做不到」是硬事實，不依賴任何文獻。** Chu 極限給出電小天線的最小品質因數 Q ≈ 1/(ka)³。取 f = 10 kHz（λ = 30 km）、天線半徑 a = 5 cm，則 ka = 2π×0.05/30000 ≈ **1.05×10⁻⁵**，(ka)³ ≈ 1.15×10⁻¹⁵，**Q_Chu ≈ 8.7×10¹⁴**。任何「電」的小天線在 VLF 都不可能有可用頻寬與效率——這就是為什麼現役 VLF 台必須是 km 級鐵塔陣列。機械天線把「振盪」放在**機械域**（聲速 ~3–7 km/s，比光速慢 5 個數量級），因此**機械波長與元件尺寸同量級**，元件在機械上是「電大」的、在電磁上是「電小」的——這是唯一的合法繞道。
+6. **【摘要驗證】2026 年出現了第一份指名道姓的反面理論分析。** arXiv **2604.26980**（2026-04-28），*Naturally Resonant Emitters: Approaching Fundamental Antenna Limits*，作者 **Damir Latypov（CRG Defense）**。核心論點：**自然共振發射體（含機械共振器）仍受 Chu–Harrington 極限約束**；作者把 ESA 理論推廣到 ESE（electrically small emitter）類別，導出單位體積發射體在給定頻率與頻寬下的效率上限與可跨類別比較的 FOM；**實測數據顯示機械天線已運作在接近理論 FOM 上限，因此質疑「還能再取得數個數量級增益」的宣稱**。（來源 27）
 
-7. **【自行推算】海水衰減決定了「非 VLF/ULF 不可」。** 海水趨膚深度 δ = √(2/ωμσ)，取 σ = 4 S/m：**1 kHz → δ ≈ 8.0 m；3 kHz → 4.6 m；10 kHz → 2.5 m；30 kHz → 1.45 m；100 kHz → 0.80 m；1 MHz → 0.25 m**（每個 δ 衰減 8.686 dB）。也就是說 10 kHz 時約 **3.5 dB/m**，1 MHz 時約 **35 dB/m**。潛艦通訊之所以卡在 VLF/ULF，是這條公式決定的，不是工程偷懶。
+7. **【摘要驗證】對照組規模確認：Cutler NAA 是 1 MW 輻射、26 座近 1000 呎鐵塔、50 baud。** 美國海軍緬因州 Cutler VLF 台，呼號 **NAA**，**24 kHz**，輸入功率最高 **1.8 MW**，常態輻射功率 **1 MW**（稱 full power）；天線為南北各 13 座、共 **26 座**鐵塔，中心塔高 **997.5 ft**；1960 年建、1961-01-04 啟用。美軍 VLF/LF 岸台的對潛廣播為 **50 baud**。（來源 31、32）
+   **對照意義：現役方案是 10⁶ W；機械天線是 10⁻²¹–10⁻⁹ W。這不是「便宜替代」，是完全不同的用途類別——只能做「最後一哩、極短訊息、可攜」，永遠不可能做「全球廣播」。**
 
-8. **【自行推算】但同一條物理也把輻射功率壓到地板。** 電偶極輻射 P̄ = ω⁴p₀²/(12πε₀c³)。取 f = 30 kHz、假設高 Q 壓電棒把 10 pF 的端電極充到 30 kV（Q = 3×10⁻⁷ C）、有效偶極臂長 0.3 m，則 p₀ ≈ 1×10⁻⁷ C·m，**P̄ ≈ 1.4×10⁻⁹ W（約 1.4 nW）**。即使把偶極矩再放大 3 個數量級也只有 µW 級。**這就是機械天線的殘酷天花板：它贏在「能不能做出來」，輸在「輻射多少功率」。** （假設全部明列，可自行代入不同參數複核。）
+8. **【摘要驗證】Plan A 成立，且比前版預期更具體。** Nature Communications 12, 3141 (2021)《Ultra-compact dual-band smart NEMS magnetoelectric antennas for simultaneous wireless energy harvesting and magnetic field sensing》（Zaeimbashi, Nasrollahpour et al., Northeastern）：**單一元件 250 × 174 µm²**，**GHz 頻段做無線能量傳輸與資料通訊（被動取能）＋ MHz 共振做 pT 級低頻磁場感測（主動感測）**，**無線功率傳輸效率較任何已報導的微型微線圈高 1–2 個數量級**，並可滿足 **SAR 法規**；明示目標應用為**植入式醫材（神經記錄與刺激）**。（來源 25）**這是「壓電主動/被動兩用元件」在頂級期刊上最直接、最具體的存在證明，且完全不碰 DC-DC 取代電感那條被排除的路。**
 
 ---
 
-## 2. 現況：技術 / 產品 / 玩家
+## 2. 現況與查證結果
 
-### 2.1 三條互相競爭的「機械天線」路線
+### 2.1 四條互相競爭的機械天線路線（更新版）
 
-| 路線 | 物理機制 | 壓電體扮演的角色 | 代表工作 |
+| 路線 | 物理機制 | 壓電體角色 | 代表成果與硬數字 |
 |---|---|---|---|
-| **A. 磁電（ME）薄膜天線** | 壓電薄膜聲共振 → 應變 → 磁致伸縮鐵磁膜磁化振盪 → 輻射磁偶極 | **驅動器（主動）＋共振器（被動）**，本身不直接輻射 | Nat Commun 8, 296 (2017)【已驗證】；Nat Commun (2021) 雙頻取能＋磁感測【已驗證】 |
-| **B. 純壓電電偶極 VLF 發射機** | 壓電棒高 Q 機械共振 → 端面電荷大幅擺動 → 振盪**電**偶極 | **共振器＋輻射源本體**，最貼近客戶命題 | LiNbO₃ Y∠36° 切 VLF 發射機【未驗證—模型記憶】 |
-| **C. 旋轉／往復永磁機械天線** | 機械旋轉永磁鐵產生時變磁偶極 | 壓電可作為**超音波驅動源**（見 2025 Nat Commun 論文） | Nat Commun (2025) 穿戴式超音波驅動旋轉磁偶極【已驗證】 |
+| **A. 磁電（ME）薄膜天線** | 壓電聲共振 → 應變 → 磁化振盪 → 磁偶極輻射 | 致動器 + 共振器 | Nat Commun 8,296 (2017)：60.68 MHz、Q=930、AlN/FeGaB；VLF 分支見 ME-MLTx 與 BlueME |
+| **B. 純壓電電偶極** | 壓電棒高 Q 共振 → 端面電荷擺動 → 電偶極 | **共振器＋輻射源本體（純血版）** | Kemp 2019：LiNbO₃ 9.6 cm、35 kHz、Q=45,000、>300×、>83× Bode–Fano；ADMIRE 2020：PZT、>6000×、60 bit/s |
+| **C. 旋轉/往復永磁** | 機械旋轉永磁 → 時變磁偶極 | 可作超音波驅動源 | RMBMA：土壤 264.8 m / 海水 203.5 m；UA-MDRR 2025：0.11 cm³ 壓電堆疊、100 m 2.64 pT、0.61 W |
+| **D. 駐極體（electret）** | 機械驅動高電荷駐極體 | 無（PTFE/FEP 駐極體） | APL 2020 Perspective 稱駐極體式輻射效率高於永磁式與壓電式（來源 30、需原文核對） |
 
-**對客戶的意義：只有路線 B 是「壓電體本身就是輻射源」的純血版本；路線 A 壓電是致動器，路線 C 壓電只是動力源。** 若客戶的核心資產是壓電材料與高 Q 共振器製程，**路線 B 的價值鏈佔比最高，路線 A 次之，路線 C 最低**（路線 C 的關鍵零件是永磁與軸承）。
+**對客戶的意義（不變且更強化）：只有路線 B 是「壓電體本身就是輻射源」，價值鏈佔比最高；路線 A 壓電是致動器；路線 C 壓電只是動力源（關鍵零件是永磁與軸承）；路線 D 完全不需要壓電。**
 
-### 2.2 玩家與機構（驗證狀態務必留意）
+**但要注意一個對客戶不利的實測事實**：路線 B 的最佳資料率是 **60 bit/s（ADMIRE, PZT）**，而路線 A/C 已做到 **200–730 m 的實地水下鏈路**。**純壓電路線在「系統級實測」上落後於磁電與永磁路線。**
 
-- **【已驗證】** 2017 ME 天線論文發表於 Nature Communications，並有對應博士論文（2018 PhD Thesis，ADS 記錄 `2018PhDT........98L`，作者姓氏首字母 L）與 ResearchGate 條目。（來源 1、6、7、8）
-- **【已驗證】** 搜尋結果中出現一件美國專利 **US 10,921,360**，標題 *Dual magnetic and electric field quartz sensor*（USPTO 全文影像連結，來源 9）。**專利號與標題來自搜尋回傳，但我未能讀取內文，其權利範圍與本題的關聯性未經確認。**
-- **【未驗證—模型記憶】** 常被提及的機構包含 Northeastern University（Nian-Xiang Sun 團隊，ME 天線）、Stanford / SLAC（Rivas-Davila 體系，壓電 VLF）、UCLA、Draper。**本回合無法確認任何一個人名與機構的對應關係，請務必人工查證後再寫入對外簡報。**
-- **【查無】** 我**沒有**找到任何一家把機械天線商品化的公司、任何一個可購買的產品型號、任何一份公開報價。**目前應視為「無商用產品」。**
+### 2.2 玩家地圖（已查證）
 
-### 2.3 現有 VLF/ULF 基礎設施的規模（對照組）
+- **美國學界／國家實驗室**：SLAC + Stanford（Kemp，VAPOR，專利權利人為 Board of Trustees of the Leland Stanford Junior University，DOE 合約 DE-AC02-76SF00515）；Northeastern（Nian-Xiang Sun，ME 天線與 VLF ME 通訊）；UIUC（Songbin Gong / Hassanien，ADMIRE；Tawfick，AMEBA 磁性共振器）；University of Florida（RoboPI，BlueME）。（來源 3、7、9、15、20、42）
+- **美國業界**：**HRL Laboratories** 是唯一查證到的 AMEBA 承包商；**Gooch & Housego** 與 **SRI International** 為 Kemp 2019 共同機構。**查無任何把機械天線商品化的公司或可購買產品型號。**（來源 13、3）
+- **中國**：**西安電子科技大學**（電子裝備結構設計教育部重點實驗室，RMBMA）、**國防科技大學第 63 研究所**、以及一支由**中國煤炭科工集團 + 應急管理部重點科技項目**資助的旋轉永磁陣列團隊（Sci Rep 2025，明確指向**礦難救援**應用）。中文核心期刊（物理學報、電子與信息學報、航空學報）有連續產出。（來源 16、17、18、19）
+- **台灣**：**查無**任何機械天線相關的公開計畫、論文或廠商。
 
-**【未驗證—模型記憶，屬公開常識級資料但本回合未能查證】** 美國海軍對潛通訊由少數幾座巨型 VLF 台承擔（例如緬因州 Cutler、華盛頓州 Jim Creek、澳洲 Exmouth），發射功率為 **MW 等級**、天線為數百公尺高的鐵塔陣列、佔地數平方公里；ELF（約 76 Hz）系統的天線是數十公里長的地下埋設導體，資料率低到「數分鐘傳一個字元」等級，美方 ELF 系統已於 2000 年代初除役。**以上每一項數字都需查證**（建議關鍵字：`Cutler VLF transmitter power`、`Jim Creek NLK VLF`、`Project ELF Clam Lake shutdown`、`US Navy VLF submarine broadcast data rate bps`）。
+### 2.3 專利地圖（前版完全空白，本版補上）
 
-**這個對照組是整篇報告的商業邏輯核心：如果現役方案是 MW 級、km 級、國家級預算，那麼一顆 cm 級、mW 級輸入功率的元件即使只能做到極短距離，也可能在「以前根本沒有任何可攜方案」的場景裡創造全新市場——這正是客戶要的 non-substitutional。**
+| 專利/公開號 | 標題 | 權利人 | 驗證狀態 |
+|---|---|---|---|
+| **US 10,424,714 / US20190074578A1 / US20190097119A1** | Piezoelectric Transmitter | **Board of Trustees of the Leland Stanford Junior University**（DOE 合約 DE-AC02-76SF00515） | 【摘要驗證】說明書載明 >300× 效率、**>88×** Bode–Fano（注意：與論文的 83× 不同，屬正常的申請/發表差異，但引用時需標明出處）（來源 7、8） |
+| **US 11,355,692** | Nanoscale radio frequency magnetoelectric antenna | **Northeastern University**（發明人含 Nian Xiang Sun） | 【摘要驗證】（來源 42、44） |
+| **US20190267534A1** | Magnetoelectric Very Low Frequency Communication System | Northeastern University（推定） | 【摘要驗證，權利人待核】（來源 43） |
+| **US20200321512A1 / WO2017210373A1** | Nanoscale RF Magnetoelectric Antenna（同族） | Northeastern University | 【摘要驗證】 |
+| **US 11,594,816** | Acoustically-driven electromagnetic antennas using piezoelectric material | 推定 UIUC 體系 | 【摘要驗證，權利人查無】（來源 46） |
+| **US 12,424,736** | Portable resonant multiferroic magnetoelectric antenna for ULF/VLF communication | 推定美國海軍體系 | 【摘要驗證，權利人查無】（來源 45） |
+| **US 10,921,360** | Dual magnetic and electric field quartz sensor | Justia 列出 **Rutgers University / MIT / Research Foundation of SUNY** | 【摘要驗證，權利人待人工核對】技術內容：石英共振器電極上鍍磁致伸縮膜，一軸測電場、正交軸獨立測磁場。**與 Northeastern 無關，前版的關聯推測不成立。**（來源 41） |
+
+**結論：專利地雷區集中在 Stanford（純壓電電偶極）與 Northeastern（ME 天線）兩大家族。台灣廠商若走路線 B，Stanford 的 Piezoelectric Transmitter 家族是必須先做 FTO（freedom-to-operate）分析的對象。**
 
 ---
 
 ## 3. 關鍵數字表
 
-| 項目 | 數值 | 驗證狀態 | 備註 |
+| 項目 | 數值 | 驗證狀態 | 來源 |
 |---|---|---|---|
-| ME 天線尺寸 / 波長 | 約 **1/1000 λ** | 【已驗證】 | Nat Commun 8, 296 (2017) |
-| ME 天線相較當時 SoA 小型天線的微縮 | **1–2 個數量級** | 【已驗證】 | 同上，原文宣稱「無性能劣化」 |
-| Chu 極限 Q（f=10 kHz, a=5 cm） | **≈ 8.7×10¹⁴** | 【自行推算】 | ka ≈ 1.05×10⁻⁵ |
-| 海水趨膚深度 @1 kHz | **≈ 8.0 m** | 【自行推算】 | σ=4 S/m |
-| 海水趨膚深度 @10 kHz | **≈ 2.5 m**（約 3.5 dB/m） | 【自行推算】 | |
-| 海水趨膚深度 @1 MHz | **≈ 0.25 m**（約 35 dB/m） | 【自行推算】 | 說明為何非 VLF 不可 |
-| 壓電棒電偶極輻射功率（30 kHz, p₀=1e-7 C·m） | **≈ 1.4 nW** | 【自行推算】 | 假設 10 pF @ 30 kV、臂長 0.3 m |
-| 壓電 VLF 發射機輻射效率增益 | 宣稱 **>300×** | 【未驗證】 | 待查證，見第 6 節 |
-| 突破 Bode–Fano 頻寬上限倍數 | 宣稱 **83×** | 【未驗證】 | 待查證 |
-| 現役 VLF 台發射功率 | **MW 等級** | 【未驗證】 | 待查證 |
-| 現役 ELF 資料率 | **< 1 bit/s 等級** | 【未驗證】 | 待查證 |
-| 機械天線實測通訊距離 | **查無可靠數字** | 【查無】 | 這是最關鍵、也最缺的一格 |
-| 機械天線實測資料率 | **查無可靠數字** | 【查無】 | 同上 |
-| 商用產品 / 型號 / 報價 | **不存在** | 【查無】 | |
+| Kemp 2019 材料/切向 | LiNbO₃ **Y∠36°**，降伏應力 >50 MPa | 【摘要驗證】 | 3, 4 |
+| Kemp 2019 尺寸/頻率/Q | **9.6 cm 棒**、**35 kHz**、**Q = 45,000** | 【摘要驗證】 | 3, 5, 6 |
+| Kemp 2019 本徵頻寬 | **≈ 0.75 Hz**（35 kHz / 45,000） | 【摘要驗證】 | 3 |
+| Kemp 2019 效率增益 | **>300×**（vs 同電尺寸先前技術） | 【摘要驗證】 | 3, 7 |
+| Kemp 2019 頻寬突破 | **>83×** Bode–Fano（專利寫 >88×） | 【摘要驗證】 | 3, 7 |
+| Kemp 2019 實測範圍 | 場強量測至 **80 m**；鏈路展示約 **100 ft (~30 m)** | 【摘要驗證】 | 6 |
+| Kemp 2019 絕對輻射功率 | **查無** | 【查無】 | — |
+| ADMIRE (PZT) 效率 | **>6000×** 同尺寸電天線 | 【摘要驗證】 | 9, 10 |
+| ADMIRE 資料率 | **60 bit/s（FSK）** ← 純壓電路線最高 | 【摘要驗證】 | 9 |
+| ME 天線 2017 頻段/Q | **60.68 MHz、Q=930、k_t²=1.35%**；全系列 60 MHz–2.5 GHz | 【摘要驗證】 | 1, 2 |
+| ME 天線 2017 微縮 | **1–2 個數量級**，小至 **1/1000 λ** | 【摘要驗證】 | 1 |
+| ME 天線微縮（2026 綜述） | 較傳統 EM 天線小 **4–5 個數量級** | 【摘要驗證】 | 29 |
+| ME-MLTx 場強 | **112 nT @ 1 m**；推估 **108 fT @ 100 m**；21.2 kHz、50 Vpp | 【摘要驗證】 | 23 |
+| ME-MLTx 功耗 | **400 mW @ 80 V 驅動** | 【摘要驗證】 | 23 |
+| BlueME 實測 | 淡水 **200 m @ 1 W**；鹹水 **730 m @ <10 W**（35–36 kHz） | 【摘要驗證】 | 20, 21 |
+| BlueME 資料率 | 二手報導稱 **1–100 kb/s**，**與 VLF 頻寬物理嚴重不符，本文判定為疑似誤植，不採用** | 【存疑】 | 20 |
+| WUWNet ME 陣列 | **12 單元陣列合成 200 nT @ 1 m**，較單元提升 1 個數量級 | 【摘要驗證】 | 22 |
+| RMBMA 通訊距離 | **土壤 264.8 m / 海水 203.5 m**；磁鐵 10×5×2 cm；1 pT | 【摘要驗證】 | 16 |
+| 中國旋轉永磁最佳化 | **20 m 內 3.5 bps** | 【摘要驗證】 | 18, 19 |
+| UA-MDRR (2025) | **100 m：空氣 2.64 pT / 水下 2.12 pT，0.61 W**；24,000 nT/cm³@1 m；壓電堆疊 0.11 cm³ | 【摘要驗證】 | 24 |
+| 磁擺陣列 (2019) | 效率較裸線圈 **+7 dB**；**1031 Hz、2 bps** | 【摘要驗證】 | 26 |
+| Nat Commun 2021 兩用元件 | **250 × 174 µm²**；GHz 取能 + MHz **pT 級**磁感測；WPT 效率較微線圈高 **1–2 數量級** | 【摘要驗證】 | 25 |
+| Cutler NAA | **24 kHz、輸入 1.8 MW / 輻射 1 MW、26 座塔、中心塔 997.5 ft** | 【摘要驗證】 | 31, 32 |
+| 美軍對潛廣播速率 | **50 baud** | 【摘要驗證】 | 32 |
+| 聲學數據機（EvoLogics） | **62,500 bps @ 300 m、10 W**，BER 1e-10 | 【摘要驗證】 | 33, 35 |
+| 聲學數據機（Benthos） | **2,000–6,000 m、140–15,360 bps**，BER 1e-7 | 【摘要驗證】 | 34, 35 |
+| 藍綠雷射 | 480 nm；清澈海水消光 **0.16 m⁻¹**、近岸 **2.8 m⁻¹**（近岸實用距離約 **1.8 m**）；已演示 **12.4 Gbps** | 【摘要驗證】 | 38, 39 |
+| 礦坑 leaky feeder | 低成本同軸 **27 MHz、約 1 km**；商用系統約 **US$3 / 線性呎**起 | 【摘要驗證】 | 36, 37 |
+| eLoran | **90–110 kHz**、UTC 授時 **50 ns**、定位 **±8 m** | 【摘要驗證】 | 47 |
+| 海水趨膚深度 | 1 kHz **7.96 m** / 10 kHz **2.52 m** / 21.2 kHz **1.73 m** / 35 kHz **1.35 m** / 1 MHz **0.25 m** | 【自行推算】 | 附錄 |
+| 淡水趨膚深度 @35 kHz | **≈ 26.9 m**（σ=0.01 S/m） | 【自行推算】 | 附錄 |
+| UA-MDRR 反推磁矩/輻射效率 | m ≈ **13 A·m²**；@100 Hz 輻射功率 **~3×10⁻²¹ W** → 效率 **~10⁻²¹** | 【自行推算】 | 附錄 |
+| Chu 極限 Q（35 kHz, a=4.8 cm） | **≈ 2.3×10¹³** | 【自行推算】 | 附錄 |
+| 商用產品 / 型號 / 報價 | **不存在** | 【查無】 | — |
 
 ---
 
-## 4. 「新能力型」應用機會（non-substitutional）
+## 4. 機會與任務拆解（non-substitutional）
 
-以下每一項的判準是：**沒有機械天線就完全做不到，而不是做得比較便宜。**
+### Plan A（建議優先，12–24 個月可見成果）：**接收端／感測端，不做發射端**
 
-1. **潛航體／水下機器人的「自帶」低頻上行鏈路。**
-   現況：AUV 要通訊必須浮出水面或拖曳浮標天線，暴露位置且中斷任務。VLF 在海水中 δ≈2.5 m（10 kHz），若機械天線能做出可攜發射端，**AUV 可在數公尺至數十公尺水深直接發送極短訊息**（「我還活著／座標／異常」）。這在既有技術樹下**沒有任何可攜替代品**——因為 Chu 極限直接封死電小天線。**這是最強的新能力候選。**
+依據 Nat Commun 12, 3141 (2021)：**單顆 250×174 µm² 元件同時做 GHz 無線取能（被動）＋ MHz pT 級磁感測（主動）**，WPT 效率較微線圈高 1–2 數量級，且滿足 SAR。（來源 25）
 
-2. **礦坑／隧道／地下設施的穿岩通訊與人員定位。**
-   岩層對 VHF/UHF 同樣是導電損耗介質；現況靠沿隧道佈設 leaky feeder 電纜，**災變坍塌後電纜即斷**。機械天線的價值不在頻寬，而在「坍塌後仍能從地底送出 bps 級的生命訊號」。
+- **為什麼是它**：接收端**完全不用面對 P ∝ ω⁴ 的輻射地板**，卻 100% 命中「主動/被動兩用」命題。
+- **市場**：植入式醫材（神經記錄/刺激）、超低功耗磁場感測、電流感測、磁異常偵測。
+- **競爭定位（已查證的靈敏度—功耗三角）**：ME 複合材料感測器 **681 pT/√Hz @1 Hz，功耗僅 3.6 mW**；ME 音叉式達 **3 pT/√Hz @318 Hz**。對照：fluxgate **20–50 pT/√Hz**（最佳 0.75 pT/√Hz）但耗數百 mW；原子磁力計 ~1 pT/√Hz 但 **20 W**；SQUID <10⁻¹⁷ T/√Hz 但需液氦。（來源 49）**ME 的賣點不是最高靈敏度，是「mW 級功耗下的 pT 級」——這正是植入式與電池供電節點的唯一可行點。**
+- **任務**：(1) 取得 AlN 或 PZT 薄膜 + 磁致伸縮層（FeGaB / Metglas）的異質結構製程能力；(2) 複現 pT 級感測與 GHz WPT 雙頻共存；(3) 對 Northeastern 專利家族（US 11,355,692 等）做 FTO。
 
-3. **GNSS 阻斷環境下的授時與粗定位替代。**
-   VLF 訊號可繞地球傳播（地—電離層波導）。若發射端可攜化，可在戰時／干擾環境部署分散式低功率 VLF 信標，做**區域性授時分發**。注意：這需要接收靈敏度而非發射功率，**接收端的 ME 天線（Nat Commun 2017 明確宣稱可雙向收發）反而是更快落地的一半。**
+### Plan B（10 年期國防押注）：可攜 VLF/ULF 發射端
 
-4. **災難搜救：穿瓦礫的單向求生信標。**
-   混凝土瓦礫對 GHz 頻段衰減嚴重。一顆鈕扣大小、電池供電、發射 bps 級 ID 碼的 ULF 信標，其價值不在資料率而在**穿透率**。市場規模小但單價容忍度高。
+判準是「以前完全做不到」，不是「做得比較便宜」：
 
-5. **【客戶最該優先評估的一項】不是做發射端，而是做「接收端 + 感測端」。**
-   Nat Commun 2021 那篇（雙頻、同時做**無線能量擷取**與**磁場感測**）指出了一條低風險路徑：**同一顆壓電/磁電元件當被動取能器 + 主動磁感測器**。這條路不需要克服「輻射功率只有 nW」這個致命瓶頸（接收端不用輻射），卻完整體現「主動/被動兩用」的命題，且立即有非國防市場（超低功耗磁場感測、生物醫學磁感測、電流感測）。**建議把它列為 B6 的「Plan A」，把 VLF 發射端列為「Plan B / 長線押注」。**
-
-6. **軍用低可偵測性通訊（LPI/LPD）。** 極低輻射功率在此**由缺點變優點**——nW 級 ERP 本身就是最好的隱蔽性。但此市場只有國家級客戶，台灣廠商需搭配國防體系（如中科院）才有入口。
-
----
-
-## 5. 反面證據、失敗案例與物理上限
-
-**這一節請客戶讀兩遍。**
-
-1. **輻射功率是無法工程化解決的硬牆。** 第 1 節第 8 點的推算給出 nW 量級。輻射功率隨 ω⁴ 下降，而 VLF/ULF 的整個賣點就是低頻——**你要的物理特性（低頻穿透）和你要的性能（輻射功率）在同一條公式裡直接對打。** 提高偶極矩需要更大的電荷 × 更長的臂，兩者都直接反對「小型化」這個賣點。這是一個**內生的、無法靠材料進步繞開的矛盾**。
-
-2. **機械應力與疲勞是第二道牆。** 要提高輻射，必須提高機械振幅；壓電陶瓷／單晶在高 Q 共振下的應變上限受**材料降伏與疲勞壽命**限制，LiNbO₃ 等單晶雖然機械損耗低但**脆性高、抗拉強度差**。連續發射（不是脈衝）情境下，**壽命與可靠度數據在公開文獻中我查無任何一筆**。這對「要做成產品」是致命的資訊缺口。
-
-3. **調變困難是第三道牆，而且很少被誠實討論。** 高 Q 是輻射效率的來源，但高 Q = 窄頻寬 = 慢響應。要調變就得破壞 Q，要保 Q 就無法調變。所謂「時變共振突破 Bode–Fano 上限」【未驗證】正是針對這點的巧解，但它本質是**用主動元件動態改變共振條件**，會引入額外功耗與非線性——**「突破 Bode–Fano」的正確理解是「Bode–Fano 只適用於線性時不變網路，時變系統不受其約束」，這不是免費午餐，是換了一個代價（主動功耗、雜散發射、複雜度）。** 客戶若把它當成「憑空多了 83 倍頻寬」會嚴重誤判。
-
-4. **主流已經在偏離「純壓電」。** 【已驗證】2025 年 Nature Communications 那篇走的是**超音波驅動的旋轉磁偶極**——也就是說，經過近十年，最新的高影響力成果選擇了**磁偶極 + 機械旋轉**，而不是壓電電偶極。這是一個對客戶不利的訊號：**如果純壓電路線最有前途，2025 年的旗艦論文不會是旋轉磁鐵。** 磁偶極在低頻的輻射阻抗與環境耦合特性通常優於電偶極（尤其在導電介質中，磁場穿透優於電場），這是物理上的結構性劣勢。
-
-5. **獨立複現與第三方驗證：查無。** 我在本回合**沒有找到任何獨立團隊複現**「>300 倍輻射效率」或「83 倍頻寬」的報告。在天線量測領域，**電小天線的效率量測本身就極易出錯**（近場耦合、饋線電流、地面反射），歷史上不乏被推翻的「超越 Chu 極限」宣稱。**在看到獨立複現之前，這些數字應視為單一團隊的自報值。**
-
-6. **DARPA 專案的沉默本身就是證據。** AMEBA 若已產出可部署系統，理應有後續型號、廠商、或轉移到軍種的公開紀錄。【查無】任何此類紀錄。DARPA 專案結束後無下文，通常意味著**技術指標未達可轉移門檻**。
-
-7. **商業化零證據。** 無公司、無產品、無報價、無供應鏈。與客戶排除的「壓電取代電感」路線相比，那條路至少有真實產品在市場上；**這條路連一個可買的東西都沒有。**
+1. **AUV／潛航體不浮出水面的極短上行訊息。** 現況：AUV 必須浮出水面才能經衛星回報位置與資料，直接暴露位置並中斷任務。（來源 A：AUV 通訊現況綜述）**BlueME 已證明淡水 200 m @ 1 W 可行**——這在既有技術樹下沒有可攜替代品（Chu 極限封死電小天線）。**但注意：這與聲學數據機（Benthos 2–6 km / 140–15,360 bps）相比距離與速率都遠遜，只能定位在「聲學被干擾或需靜默」的補位角色，不是取代。**
+2. **礦坑／隧道穿岩生命訊號。** leaky feeder 坍塌即斷，商用系統約 US$3/線性呎；TTE（through-the-earth）系統又受**礦坑防爆（intrinsic safety）電流上限**壓制。（來源 36、37）中國已有由**應急管理部**資助的旋轉永磁陣列團隊直攻此市場（來源 17）——**這是目前公開資料中商業化意圖最明確的一條**。
+3. **災難搜救穿瓦礫信標。** 價值在穿透率而非資料率，數 bps 即可。
+4. **GNSS 阻斷下的區域授時。** 對照 eLoran（100 kHz、50 ns 授時、±8 m）；機械天線可攜信標可作為**分散式、可拋棄式**的補充節點。**但這需要的是接收靈敏度而非發射功率，再次指回 Plan A。**
+5. **LPI/LPD 低可偵測通訊。** 10⁻⁹–10⁻²¹ W 的 ERP 在此**由缺點變優點**；但只有國家級客戶，台灣廠商需搭配國防體系（中科院）才有入口。
 
 ---
 
-## 6. 未解問題（下一輪必查清單，按優先序）
+## 5. 反面證據與物理／法律上限
 
-1. **壓電 VLF 發射機那篇論文的完整書目、作者、機構、確切頻率與功率**——查證關鍵字：`Kemp high-Q piezoelectric resonator portable VLF transmitter Nature Communications 2019`。這是整個 B6 的地基，目前**未驗證**。
-2. **>300× 與 83× 這兩個數字的精確定義與基準**（相對於什麼？同電尺寸的什麼天線？效率是輻射效率還是總效率？）——自報數字最容易在定義上取巧。
-3. **實測通訊距離、資料率、ERP、DC 輸入功率**——目前完全空白，是決定商業可行性的唯一硬指標。
-4. **有無任何獨立第三方複現？** 查 `magnetoelectric antenna reproduce`、`criticism mechanical antenna radiation efficiency measurement`。
-5. **DARPA AMEBA 的預算、參與單位、結案狀態、是否有 Phase 2 或轉軍種**。
-6. **機械天線的連續運轉壽命／疲勞數據**——公開文獻是否存在？若不存在，這本身就是重大風險揭露。
-7. **US 10,921,360（Dual magnetic and electric field quartz sensor）的權利範圍**，以及 Northeastern / Stanford 名下的機械天線專利族——**專利地雷區地圖目前完全空白**。
-8. **中國團隊在旋轉永磁機械天線的投入規模與最佳成果**（任務原文提到有大量投入，本回合查無任何一筆）。
-9. **Nat Commun 2021 那篇「雙頻取能＋磁感測」的靈敏度數字（pT/√Hz？）與功耗**——這是我建議的 Plan A，需要硬數據支撐。
-10. **接收端市場**：ME 磁感測器 vs. 現有 fluxgate / SQUID / TMR 的靈敏度—成本—功耗三角。
-11. **台灣可及性**：中科院、國研院是否有相關計畫？國際合作是否受 ITAR 或出口管制限制（VLF 對潛通訊高度敏感）？
-12. **時變共振（time-varying / parametric）調變的實作代價**：切換元件的耐壓、損耗、雜散輻射。
+**這一節請客戶讀兩遍。本版新增的三條（1、2、6）比前版嚴重得多。**
+
+1. **【新增，最致命】已公開的「通訊距離」多半是近場磁感應，不是輻射。** 見第 1 節第 5 點推算：UA-MDRR 在 100 m 的磁矩反推值對應輻射功率約 10⁻²¹ W。**近場鏈路 B ∝ 1/r³，射程加倍要 8 倍磁矩；工程迭代無法把 700 m 變成 7 km。** 客戶若把論文的「通訊距離」當成天線射程來做市場推算，會系統性高估數個數量級。
+
+2. **【新增】2026 年的獨立理論分析直接質疑「還有數量級空間」的說法。** Latypov (arXiv 2604.26980) 指出自然共振發射體仍受 Chu–Harrington 約束，且**實測顯示機械天線已在理論 FOM 上限附近**。（來源 27）這意味著：**這條技術路線的性能上限可能已經被摸到，不是「還在早期、後面會大幅進步」。**
+
+3. **輻射功率的 ω⁴ 內生矛盾（不變）。** 你要的物理特性（低頻穿透）與你要的性能（輻射功率）在同一條公式裡對打。從 35 kHz 降到 1 kHz，ω⁴ 使輻射功率掉 **1.5×10⁶ 倍**。**這是材料進步繞不開的矛盾。**
+
+4. **高 Q 與調變頻寬的衝突，以及對「突破 Bode–Fano」的正確理解。** Kemp 裝置 Q=45,000 → 本徵頻寬僅 **0.75 Hz**。所謂 83× 突破，本質是**時變共振（LTV）不受只適用於線性時不變網路的 Bode–Fano 約束**——**這不是免費午餐**，代價是額外主動功耗、非線性、雜散發射與切換元件耐壓。即便 83×，頻寬也只約 **62 Hz**，資料率仍在數十 bps 量級（與 ADMIRE 的 60 bit/s 一致）。**客戶若理解成「憑空多 83 倍頻寬」會嚴重誤判。**
+
+5. **導電介質中磁場優於電場——這條物理對純壓電（路線 B）結構性不利。** 已查證：**水下磁偶極在空氣中產生的 EM 場優於電偶極**；水中發射端應採**水平磁偶極（HMD）**；相關工作以 19 kHz 小環天線、<10 W 達到海面上 **574 m**。（來源 40）**這解釋了為什麼實地水下鏈路的成功案例（BlueME、RMBMA、UA-MDRR）全部是磁偶極，而純壓電電偶極（Kemp、ADMIRE）只有陸上短距離展示。**
+
+6. **【新增】比較基準本身可能不公平。** IEEE 的建模工作指出：**壓電應變天線的輻射電阻遠小於文獻中普遍假設的「同尺寸電偶極」**（來源 48）。若基準被高估，「>300×」「>6000×」這類倍數就會被系統性放大。**在看到獨立第三方以統一基準複現前，這些倍數應視為單一團隊自報值。**
+
+7. **AMEBA 的結案本身就是負面訊號。** FY2021 完成、FY2022 經費下降、**查無任何後續型號、軍種接手或技轉紀錄**。（來源 14）DARPA 專案結束後無下文，通常意味著未達可轉移門檻。
+
+8. **獨立第三方複現：仍然查無。** 本回合大量搜尋後，**未找到任何獨立團隊以相同方法複現 >300× 或 83×**。Kemp 本人也承認場強量測極易受干擾（「任何 RF 干擾或周邊材料都會顯著改變量測，很多實驗必須跑到遠離電線與建築的野地」）。（來源 6）電小天線效率量測歷史上不乏被推翻的「超越極限」宣稱。
+
+9. **機械疲勞與壽命：公開文獻仍查無任何一筆連續運轉壽命數據。** 已知 LiNbO₃ Y∠36° 降伏應力 >50 MPa、本徵損耗低（來源 3），但**「單次量測不斷裂」與「連續發射 10,000 小時」是兩回事**。這對產品化是重大資訊缺口。
+
+10. **商業化零證據（不變）。** 查無任何公司、產品型號、報價或供應鏈。**與客戶排除的「壓電取代電感」路線相比，那條路至少有真實產品在市場上；這條路連一個可買的東西都沒有。**
+
+11. **法律／出口管制風險。** VLF 對潛通訊高度敏感；美方由 ITAR（USML）與 EAR（CCL，內含 Wassenaar 清單）雙軌管制，Wassenaar 近年並新增潛艦推進等技術管制。（來源 A：Wassenaar/ITAR 概述）**本回合查無 VLF 發射機的具體管制條目編號**——台灣廠商若要與美方單位合作，必須先做具體條目確認，不可假設可自由技轉。
+
+---
+
+## 6. 未解問題（下一輪必查，按優先序）
+
+1. **Kemp 2019 裝置的絕對輻射功率（W / dBm）與絕對場強—距離曲線。** 這是把「>300×」換算成「能不能通訊」的唯一橋樑，本回合仍查無。需取得原文 Fig. 與補充材料。
+2. **BlueME 的確切資料率。** 二手報導的「1–100 kb/s」與 VLF 頻寬物理嚴重衝突，**必須以 arXiv 2411.09241 原文核對**；若真為 kb/s 級，是本領域最重要的單一數字，需理解其調變方式。
+3. **BlueME「鹹水 730 m」的鏈路幾何**：是否為水中—空氣—水中的側向波路徑？（本文第 1 節第 5 點推算指出全程走海水物理上不可能。）
+4. **「>300×」「>6000×」的基準定義**：相對於什麼天線？效率是輻射效率還是總效率（含匹配網路）？IEEE 建模工作對輻射電阻的質疑是否成立？
+5. **AMEBA 的預算金額、完整承包商名單、結案報告、TA1/TA2 是否達標。** 建議查 USAspending.gov 與 DTIC。
+6. **機械天線的連續運轉壽命／疲勞數據**（任何路線）。若確實不存在，這本身就是必須寫進商業計畫的風險揭露。
+7. **US 10,921,360 的完整 claim 與真實權利人**（Justia 顯示 Rutgers/MIT/SUNY，需以 USPTO 原件核對）；Stanford Piezoelectric Transmitter 家族的 claim 範圍與 FTO 空間。
+8. **Nat Commun 2021 兩用元件的完整規格**：磁感測噪聲密度（pT/√Hz）、WPT 絕對效率百分比、耗電、以及 2021 年後是否有跟進的動物實驗或臨床工作。
+9. **駐極體式機械天線（路線 D）是否真的效率最高**（APL 2020 Perspective 的說法需原文核對）——若成立，對客戶是負面訊號，因為該路線不需要壓電。
+10. **台灣可及性**：中科院／國研院是否有相關計畫？ITAR/EAR 具體管制條目為何？
+11. **中國礦難救援旋轉永磁陣列（中國煤炭科工＋應急管理部）的實際部署狀態**——這是唯一有明確政府客戶與應用場景的團隊。
 
 ---
 
 ## 7. 來源清單
 
-> **重要**：以下 1–9 項的標題與 URL 均為本回合 WebSearch **實際回傳**的結果，未經 WebFetch 讀取內文（工具被封鎖）。摘要內容來自搜尋引擎回傳的彙整文字。第 1 節中標【未驗證—模型記憶】與【自行推算】的內容**不對應以下任何來源**，已在正文明確標示。
+1. **Acoustically actuated ultra-compact NEMS magnetoelectric antennas** — Nature Communications 8, 296 (2017) — https://www.nature.com/articles/s41467-017-00343-8 — *ME 機械天線奠基論文；60 MHz–2.5 GHz，非 VLF；微縮 1–2 數量級。*
+2. **同上 PMC 全文（PMC5567369）** — https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5567369/ — *開放取用入口，含 AlN/FeGaB 材料與 Q=930 等細節。*
+3. **A high Q piezoelectric resonator as a portable VLF transmitter** — Nature Communications 10, 1715 (2019), Kemp M.A., Franzi M., Haase A. et al. — https://www.nature.com/articles/s41467-019-09680-2 — *本題地基；LiNbO₃ Y∠36°、9.6 cm、35 kHz、Q=45,000、>300×、>83× Bode–Fano。*
+4. **同上 OSTI 條目** — https://www.osti.gov/pages/biblio/1510219 — *確認 SLAC/DOE 出處與作者機構。*
+5. **SLAC develops novel compact antenna for communicating where radios fail** — https://www6.slac.stanford.edu/news/2019-04-12-slac-develops-novel-compact-antenna-communicating-where-radios-fail — *SLAC 官方新聞稿。*
+6. **A strain-based antenna paves the way for portable long-range transmitters** — Physics Today — https://physicstoday.aip.org/news/a-strain-based-antenna-paves-the-way-for-portable-long-range-transmitters — *9.6 cm 棒、量測至 80 m、100 ft 鏈路展示、Kemp 對量測困難的自述。*
+7. **US20190074578A1 — Piezoelectric Transmitter** — https://patents.google.com/patent/US20190074578A1/en — *權利人 Board of Trustees of the Leland Stanford Junior University；載明 VAPOR 代號與 >88× Bode–Fano。*
+8. **US10424714B2 — Piezoelectric transmitter** — https://patents.google.com/patent/US10424714 — *同族已核准專利。*
+9. **Acoustically Driven and Modulation Inducible Radiating Elements (ADMIRE)** — arXiv:1906.07797, Hassanien et al. — https://arxiv.org/abs/1906.07797 — *PZT >6000× 效率、60 bit/s FSK。*
+10. **Acoustically driven electromagnetic radiating elements** — Scientific Reports 10, 17006 (2020) — https://www.nature.com/articles/s41598-020-73973-6 — *ADMIRE 期刊版。*
+11. **Underwater Radio, Anyone?（DARPA 官方）** — https://www.darpa.mil/news/2016/underwater-radio — *AMEBA 官方說明與 Troy Olsson。*
+12. **A MEchanical Based Antenna (AMEBA) — BAA HR001117S0007** — https://govtribe.com/opportunity/federal-contract-opportunity/a-mechanical-based-antenna-ameba-hr001117s0007 — *45 個月、TA1/TA2 分工。*
+13. **HRL Awarded DARPA Project AMEBA** — https://www.hrl.com/news/2017/11/02/hrl-awarded-darpa-project-ameba-develop-man-portable-low-frequency-radio-antennas — *唯一查證到的承包商，磁彈性路線、約 1 kHz。*
+14. **DARPA FY2022 Budget Justification（RDT&E Vol.1）** — https://comptroller.war.gov/Portals/45/Documents/defbudget/fy2022/budget_justification/pdfs/03_RDT_and_E/RDTE_Vol1_DARPA_MasterJustificationBook_PB_2022.pdf — *記載 AMEBA 於 FY2021 完成。*
+15. **New DARPA AMEBA project on magnetic resonators（UIUC Tawfick）** — https://tawfick.mechse.illinois.edu/2017/09/01/new-darpa-ameba-project-on-magnetic-resonators-for-low-frequency-communication/ — *第二個查證到的 AMEBA 參與團隊。*
+16. **A Rotating-Magnet Based Mechanical Antenna (RMBMA) for ELF-ULF Wireless Communication** — JPIER — https://www.jpier.org/ac_api/download.php?id=18070204 — *土壤 264.8 m、海水 203.5 m、10×5×2 cm 磁鐵、1 pT。*
+17. **Planar rotating permanent magnetic mechanical antenna array for beamforming** — Scientific Reports (2025) — https://www.nature.com/articles/s41598-025-28918-2 — *中國煤炭科工集團＋應急管理部資助，礦難救援導向。*
+18. **基於旋轉永磁體的超低頻機械天線電磁特性分析** — 物理學報 68, 20190339 — https://wulixb.iphy.ac.cn/article/doi/10.7498/aps.68.20190339 — *中國旋轉永磁機械天線理論分析。*
+19. **基於旋轉永磁體的低頻通信技術研究** — 電子與信息學報 — https://jeit.ac.cn/cn/article/doi/10.11999/JEIT210274 — *20 m 內 3.5 bps 符元率。*
+20. **BlueME: Robust Underwater Robot-to-Robot Communication Using Compact Magnetoelectric Antennas** — arXiv:2411.09241（IEEE J. Oceanic Eng.） — https://arxiv.org/abs/2411.09241 — *淡水 200 m @1 W、鹹水 730 m @<10 W、35–36 kHz、ASV+ROV 實地測試。*
+21. **UF 官方新聞：A new frontier for marine robot communication** — https://news.ufl.edu/2026/05/marine-robot-communication/ — *BlueME 的機構歸屬與數字二次確認。*
+22. **VLF Mechanical Antenna Arrays for Underwater Wireless Communications** — WUWNet '22 — https://dl.acm.org/doi/abs/10.1145/3567600.3568150 — *12 單元陣列合成 200 nT @1 m。*
+23. **A Multilayered Magnetoelectric Transmitter with Suppressed Nonlinearity for Portable VLF Communication** — Research (2023) — https://spj.science.org/doi/10.34133/research.0208 — *112 nT@1 m、108 fT@100 m、21.2 kHz、400 mW。*
+24. **A wearable, ultrasonically-actuated magnetic-dipole rotating resonator for mobile communication in cross-medium environment** — Nature Communications 16, 4137 (2025), Cheng Z. et al. — https://www.nature.com/articles/s41467-025-59539-y — *0.11 cm³ 壓電堆疊驅動 NdFeB；100 m 2.64 pT（空氣）/2.12 pT（水下）、0.61 W。*
+25. **Ultra-compact dual-band smart NEMS magnetoelectric antennas for simultaneous wireless energy harvesting and magnetic field sensing** — Nature Communications 12, 3141 (2021), Zaeimbashi et al. — https://www.nature.com/articles/s41467-021-23256-z — *Plan A 的存在證明：250×174 µm²、GHz 取能＋MHz pT 感測。*
+26. **Magnetic Pendulum Arrays for Efficient ULF Transmission** — Scientific Reports 9, 13220 (2019) — https://www.nature.com/articles/s41598-019-49341-4 — *較裸線圈 +7 dB；1031 Hz、2 bps。*
+27. **Naturally Resonant Emitters: Approaching Fundamental Antenna Limits** — arXiv:2604.26980 (2026-04-28), Damir Latypov (CRG Defense) — https://arxiv.org/abs/2604.26980 — *本文最重要的反面證據：機械天線已接近理論 FOM 上限。*
+28. **A survey of mechanical antennas applied for low-frequency transmitting** — iScience 26(1), 2022 — https://www.sciencedirect.com/science/article/pii/S2589004222021058 — *領域綜述，含各團隊性能比較表（表格內容未經原文核對）。*
+29. **Magnetoelectric antennas: Fundamentals, state-of-the-art, challenges, and future perspectives** — APL Electronic Devices 2, 011502 (2026) — https://pubs.aip.org/aip/aed/article/2/1/011502/3378475/Magnetoelectric-antennas-Fundamentals-state-of-the — *最新綜述；ME 天線微縮 4–5 數量級，但輻射機制不確定、缺乏最佳化方法、頻寬窄。*
+30. **Ultra-compact mechanical antennas（Perspective）** — Applied Physics Letters 117, 170501 (2020) — https://pubs.aip.org/aip/apl/article-abstract/117/17/170501/39082/ — *四條路線比較；宣稱駐極體式輻射效率高於永磁式與壓電式（需原文核對）。*
+31. **VLF Transmitter Cutler — Wikipedia** — https://en.wikipedia.org/wiki/VLF_Transmitter_Cutler — *NAA、24 kHz、1.8 MW 輸入、26 座塔。*
+32. **NAA Cutler Maine — Navy VLF Transmitter Site** — https://www.navy-radio.com/commsta/cutler.htm — *1 MW 輻射、997.5 ft 中心塔、50 baud 對潛廣播。*
+33. **EvoLogics 聲學數據機產品頁** — https://www.evologics.com/acoustic-modems — *商用聲學數據機規格對照組。*
+34. **Teledyne Marine Acoustic Communication 產品線** — https://www.teledynemarine.com/products/product-line/acoustic-communication — *Benthos 系列規格。*
+35. **State-of-the-Art Underwater Acoustic Communication Modems: Classifications, Analyses and Design Challenges** — https://www.researchgate.net/publication/341253870_State-of-the-Art_Underwater_Acoustic_Communication_Modems_Classifications_Analyses_and_Design_Challenges — *EvoLogics 62.5 kbps@300 m/10 W、Benthos 2–6 km/140–15,360 bps 的來源。*
+36. **Low-cost leaky feeder communication for mines rescue** — Mining Technology 129(4), 2020 — https://www.tandfonline.com/doi/abs/10.1080/25726668.2020.1838110 — *27 MHz、約 1 km；商用 leaky feeder 昂貴笨重。*
+37. **Underground Communications & Tracking Systems Update（Coal Age reprint）** — https://www.rfsworld.com/userfiles/pdf/coal_age_reprint_jan08.pdf — *leaky feeder 約 US$3/線性呎起。*
+38. **Blue Laser Diode Enables Underwater Communication at 12.4 Gbps** — Scientific Reports (2017) — https://www.nature.com/articles/srep40480 — *藍綠雷射速率上限對照。*
+39. **Laser Transmission Characteristics of Seawater for Underwater Wireless Optical Communication** — PMC12115245 — https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12115245/ — *480 nm 消光係數 0.16 / 2.8 m⁻¹，近岸僅約 1.8 m。*
+40. **Performance of both-way communications using a magnetic dipole near the sea surface** — IET MAP (2022) — https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/mia2.12228 — *導電介質中磁偶極優於電偶極；19 kHz 小環 <10 W 達海面上 574 m。*
+41. **US 10,921,360 — Dual magnetic and electric field quartz sensor** — https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/10921360 — *石英共振器＋磁致伸縮膜；正交軸同時測 E 與 H。權利人依 Justia 為 Rutgers/MIT/SUNY，待原件核對。*
+42. **Nian Xiang Sun 專利清單（Justia）** — https://patents.justia.com/inventor/nian-xiang-sun — *Northeastern ME 天線專利家族入口。*
+43. **US20190267534A1 — Magnetoelectric Very Low Frequency Communication System** — https://patents.google.com/patent/US20190267534A1/en — *Northeastern 的 VLF ME 通訊系統專利。*
+44. **US 11,355,692 — Nanoscale radio frequency magnetoelectric antenna** — https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/11355692 — *Northeastern 已核准的核心專利。*
+45. **US 12,424,736 — Portable resonant multiferroic magnetoelectric antenna for ULF/VLF communication** — https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/12424736 — *最新的可攜 ULF/VLF ME 天線專利（權利人待查）。*
+46. **US 11,594,816 — Acoustically-driven electromagnetic antennas using piezoelectric material** — https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/11594816 — *ADMIRE 路線對應專利（權利人待查）。*
+47. **eLoran – Alternative PNT for submerged and GNSS denied environments（UDT 簡報）** — https://cdn.asp.events/CLIENT_Clarion__96F66098_5056_B733_492B7F3A0E159DC7/sites/UDT-2020/media/libraries/udt-2022-distec-slides/20004---Dr-Gerard-Offermans---FINAL-SLIDES---eLoran-Presentation.pdf — *90–110 kHz、50 ns 授時、±8 m；LF 可入水數公尺。*
+48. **Modeling of Piezoelectric Resonator Antennas for VLF Electromagnetic Radiation** — IEEE — https://ieeexplore.ieee.org/iel7/9372408/9372428/09372654.pdf — *指出壓電應變天線輻射電阻遠小於文獻普遍假設的同尺寸電偶極——比較基準的關鍵質疑。*
+49. **Ultrasensitive Magnetic Field Sensors for Biomedical Applications** — PMC7146409 — https://pmc.ncbi.nlm.nih.gov/articles/PMC7146409/ — *fluxgate / ME / TMR / SQUID / 原子磁力計的靈敏度—功耗對照。*
+50. **Piezo-Based Approach Dramatically Shrinks VLF Antennas** — Electronic Design — https://www.electronicdesign.com/technologies/analog/article/21808539/piezo-based-approach-dramatically-shrinks-vlf-antennas — *Kemp 工作的業界媒體解讀。*
+51. **A Bionic Flapping Magnetic-Dipole Resonator for ELF Cross-Medium Communication** — PMC11321680 — https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11321680/ — *路線 C 的另一變體（拍翼式磁偶極），跨介質 ELF。*
+52. **Developing VLF Magnetoelectric Antennas for Communication Systems（Northeastern ECE）** — https://ece.northeastern.edu/news/developing-vlf-magnetoelectric-antennas-for-communication-systems/ — *確認 Northeastern 的 VLF ME 天線分支存在。*
 
-1. **Acoustically actuated ultra-compact NEMS magnetoelectric antennas** — Nature Communications 8, 296 (2017)
-   https://www.nature.com/articles/s41467-017-00343-8
-   *磁電機械天線奠基論文；鐵磁／壓電薄膜異質結構在聲共振頻率收發電磁波，尺寸小至 1/1000 波長，較當時最先進小型天線微縮 1–2 個數量級。*
-
-2. **Acoustically actuated ultra-compact NEMS magnetoelectric antennas — PubMed (PMID 28831042)**
-   https://pubmed.ncbi.nlm.nih.gov/28831042/
-   *同一論文的 PubMed 索引，用於確認發表年份為 2017 而非任務描述中的 2019。*
-
-3. **Acoustically actuated ultra-compact NEMS magnetoelectric antennas — PMC 全文（PMC5567369）**
-   https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5567369/
-   *開放取用全文入口；本回合因 WebFetch 被封鎖未能讀取，建議人工開啟核對數字。*
-
-4. **Ultra-compact dual-band smart NEMS magnetoelectric antennas for simultaneous wireless energy harvesting and magnetic field sensing** — Nature Communications (2021)
-   https://www.nature.com/articles/s41467-021-23256-z
-   *同一顆元件同時做無線能量擷取與磁場感測——「壓電主動/被動兩用」在文獻上最直接的存在證明，本文建議列為 Plan A。*
-
-5. **A wearable, ultrasonically-actuated magnetic-dipole rotating resonator for mobile communication in cross-medium environment** — Nature Communications (2025)
-   https://www.nature.com/articles/s41467-025-59539-y
-   *2025 年最新旗艦成果，走超音波驅動旋轉磁偶極路線，顯示主流正偏離純壓電電偶極——本文第 5 節的關鍵反面證據。*
-
-6. **(PDF) Acoustically actuated ultra-compact NEMS magnetoelectric antennas — ResearchGate**
-   https://www.researchgate.net/publication/319231797_Acoustically_actuated_ultra-compact_NEMS_magnetoelectric_antennas
-   *同論文的 ResearchGate 條目，可作為取得 PDF 的備援途徑。*
-
-7. **ARTICLE Acoustically actuated ultra-compact NEMS magnetoelectric antennas — d-nb.info 鏡像**
-   https://d-nb.info/1197507698/34
-   *德國國家圖書館典藏的同論文全文鏡像，另一條備援取得途徑。*
-
-8. **Acoustically Actuated Ultra-Compact NEMS Magnetoelectric Antennas — 博士論文（2018）, NASA ADS**
-   https://ui.adsabs.harvard.edu/abs/2018PhDT........98L/abstract
-   *對應的博士論文（ADS bibcode 2018PhDT........98L），通常包含期刊論文省略的量測細節與失敗案例，是查證實測數字的最佳單一來源。*
-
-9. **Dual magnetic and electric field quartz sensor — 美國專利 US 10,921,360**
-   https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/10921360
-   *搜尋回傳的相關專利；專利號與標題來自搜尋結果，內文與權利範圍**未經確認**，列此僅供下一輪查證起點。*
+> 註：第 5 節第 11 點（ITAR/Wassenaar）與第 4 節 Plan B 第 1 點（AUV 需浮出水面）所依據的搜尋結果為一般性綜述與官方說明頁，本回合未取得可單一引用的權威條目編號，故在正文標為「來源 A」而不編入上表，以免造成過度引用的假象。
 
 ---
 
 ### 附錄：本文所有【自行推算】的算式（供複核）
 
-- **Chu 極限**：`Q_min ≈ 1/(ka)³ + 1/(ka)`，`k = 2π/λ`。f=10 kHz → λ=30 km；a=0.05 m → ka=1.047×10⁻⁵ → Q≈8.7×10¹⁴。
-- **海水趨膚深度**：`δ = √(2/(ωμ₀σ))`，σ=4 S/m，μ₀=4π×10⁻⁷。f=1 kHz → δ=7.96 m；其餘頻率按 `δ ∝ 1/√f` 縮放。每 δ 衰減 8.686 dB。
-- **電偶極輻射功率**：`P̄ = ω⁴p₀²/(12πε₀c³)`。f=30 kHz → ω=1.885×10⁵，ω⁴=1.262×10²¹，12πε₀c³=9.01×10¹⁵ → `P̄ ≈ 1.4×10⁵ × p₀²` [W]。p₀=1×10⁻⁷ C·m → P̄≈1.4×10⁻⁹ W。
+- **海水趨膚深度**：`δ = √(2/(ωμ₀σ)) = 251.6/√f`（σ=4 S/m, μ₀=4π×10⁻⁷）。f=1 kHz→7.96 m；10 kHz→2.52 m；21.2 kHz→1.73 m；35 kHz→1.35 m；1 MHz→0.25 m。每 δ 衰減 8.686 dB（35 kHz ≈ 6.4 dB/m）。
+- **淡水趨膚深度**（σ=0.01 S/m）：f=35 kHz → `δ = √(2/(2π·35000·1.2566e-6·0.01)) ≈ 26.9 m`。→ BlueME 淡水 200 m ≈ 7.4δ ≈ 64 dB，物理上合理。
+- **BlueME 鹹水 730 m 的一致性檢驗**：730/1.35 = 541 個 δ → ≈ 4,700 dB，全程走海水不可能 ⇒ 必為空氣/海面路徑。
+- **近場磁偶極矩反推**：軸向 `B = μ₀m/(2πr³)` ⇒ `m = 2πr³B/μ₀`。r=100 m, B=2.64 pT ⇒ m ≈ 13.2 A·m²。
+- **磁偶極輻射功率**：`P = μ₀ω⁴m²/(12πc³)`。取 f=100 Hz（ω=628）、m=13.2 ⇒ P ≈ 3.4×10⁻²¹ W。相對 0.61 W 輸入 ⇒ 輻射效率 ~10⁻²¹。**（頻率為假設值，原文未給；若實際頻率更高，效率按 ω⁴ 上升，請以原文頻率重算。）**
+- **Chu 極限**：`Q_min ≈ 1/(ka)³ + 1/(ka)`。f=35 kHz → λ=8.566 km；a=0.048 m → ka=3.52×10⁻⁵ → Q ≈ 2.3×10¹³。
+- **Kemp 裝置本徵頻寬**：35,000 Hz / 45,000 = 0.78 Hz（論文記為 ≈0.75 Hz）。× 83 ⇒ 約 62 Hz，對應資料率數十 bps，與 ADMIRE 實測 60 bit/s 同量級。
+- **ω⁴ 頻率懲罰**：35 kHz → 1 kHz，頻率降 35 倍，輻射功率降 35⁴ ≈ 1.5×10⁶ 倍。

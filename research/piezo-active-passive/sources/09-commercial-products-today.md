@@ -1,332 +1,390 @@
 # 現有商品化產品盤點：已經在賣的壓電「兩用/非電感」產品與價格
 
-> 一句話結論：**「今天真的買得到」的壓電兩用元件只有三小類**——TDK CeraPlas／relyon piezobrush（冷電漿，元件即高壓源即電極）、Boréas CapDrive 觸覺驅動 IC 家族（同一片壓電同時致動＋感測）、以及 STEMINC 等零售級 Rosen 型壓電變壓器（唯一有公開價格的錨點，**USD 11.88／顆，2 W 級**）；而**整個領域的價格資料幾乎全部不透明**，這本身就是本輪盡職調查最重要的發現：在拿不到 TDK／relyon／Boréas 報價之前，「壓電太貴」與「壓電夠便宜」兩種說法都無法被證實或證偽。
+> 一句話結論：**壓電「陶瓷本體」確實便宜（Murata CERALOCK 諧振器量產價 USD 0.233–0.245／顆，這是全領域的成本地板），但今天市場上所有被當成「主動＋被動兩用」在賣的壓電產品，一律以「系統／儀器」而非「元件」定價（USD 90 → 4,000）——唯一的例外是 Boréas 的壓電驅動 IC（USD 3.71–5.71，DigiKey 現貨）。而本輪最重要的更正是：前版「壓電高壓源比傳統模組便宜 35 倍」的論證站不住腳——TDK CeraPlas HF 實驗樣品在 DigiKey 約 USD 142，對手 XP Power Q101-5（10 kV／0.5 W 完整穩壓模組）約 USD 365–420，差距只有 2.6–2.9 倍，而且 CeraPlas 還需要外掛驅動電路。**
 
 ---
 
-## 0. 研究方法與限制（誠實揭露，請務必先讀）
+## 0. 研究方法與限制（誠實揭露）
 
-**本輪執行完成度不足，必須明講：**
+**與前一版的關係**：前一版（本檔）自承 WebSearch 有效查詢 **0 次**、全部內容為轉引其他 dossier。**本輪已完整重做並覆寫。**
 
-1. **本輪 WebSearch 次數 = 0（有效查詢 0 次）。** 我送出的第一組查詢（TDK CeraPlas HF `Z63000Z2910Z` 規格、relyon piezobrush PZ3 價格）即被系統回覆 `this session has used its web search budget (200 of 200 WebSearch calls)`。本 session 的 200 次搜尋額度由同批多個研究 agent 共用，在我啟動時已被用盡。**原訂 25–35 次查詢計畫完全未執行。**
-2. **WebFetch 在本環境被 egress policy 全面封鎖**（任何 URL 回 403），無法用抓網頁替代搜尋。
-3. **因此本文件的性質是「二次彙整（secondary synthesis）」，不是一手檢索報告。** 全部內容來自同一研究專案中其他 agent 已完成、已附 URL 的 11 份 dossier（同目錄 `01/02/03/04/06/07/10/11/15/16/21`）。**我沒有親自打開過任何一個 URL，也沒有親自執行過任何一次搜尋。**
-4. **標記規則**：
-   - `【轉引】` = 來自同目錄某份 dossier，該 dossier 標示為已由搜尋摘要取得，並附有原始 URL（第 7 節可追）。
-   - `【未驗證】` = 原 dossier 自己就標了未驗證（僅單一搜尋摘要、無法交叉比對）。
-   - `【查無】` = 已有 agent 查過但沒查到。
-   - `【本輪未查】` = 本專案至今**沒有任何 agent 查過**，不可當成「不存在」。
-5. **明確未涵蓋的指派項目（額度歸零導致，請下一輪優先補）**：
-   - (b) 壓電式離子產生器／負離子／臭氧模組的**具體型號與價格** →【查無＋本輪未查】（只查到 SMC 的專利，沒查到在售型號）。
-   - (d) 壓電馬達／致動器（PI、Nanomotion、PiezoMotor、Xeryon、TDK）的**價格級距** →【本輪未查】，一個數字都沒有。
-   - (e) xMEMS **Sycamore／XMC-2400 超音波氣泵**、**TDK PiezoListen**、**Murata 壓電喇叭** →【本輪未查】；Boréas 各型號的**輸出電壓／電流／封裝／單價** →【查無】。
-   - (f) 超音波無線供電**商用模組／穿金屬供電產品** →【查無】，且已有 agent 明確查過並回報「2026 年仍無任何具名商用產品或 ATEX/IECEx 認證方案」。
-   - (g) Bartels mp6／TTP Ventus (Lee Ventus) Disc Pump／Murata microblower MZB 的**價格** →【本輪未查】；只有 Bartels 的壽命規格。
-   - CCFL 時代的 Tamura／Sumida／Murata PT 型號與停產時點 →【本輪未查】。
-   - TI／ON Semi／Microchip 是否有 PT 或壓電驅動 IC →【本輪未查】（21 號 dossier 明列此為下一輪第一優先）。
-6. **本文件未捏造任何型號、專利號、公司名或數字。** 凡我沒有來源的，一律寫「查無」或「本輪未查」，不做推測性補齊。
+**本輪實際執行**：
+
+1. **本輪有效 WebSearch = 22 次。** 在第 22 次之後，系統回覆 `this session has used its web search budget (200 of 200 WebSearch calls)`，額度被硬性截斷。任務指派的 30–45 次未能完成，第 23 次起全部失敗。**200 次上限由本 session 多個 agent 共用，並非本 agent 獨用。**
+2. **WebFetch 與 curl 在本環境全面 403**，無法用抓網頁替代搜尋。因此**所有價格與規格都來自 WebSearch 回傳的摘要文字，我沒有親自開啟任何一個 URL**。
+3. **標記規則（本版重新定義，比前版嚴格）**：
+   - `【本輪查得】` = 本輪 WebSearch 摘要直接回傳的內容，附對應 URL。
+   - `【未驗證】` = 只出現在單一搜尋摘要、無交叉比對，或來源是報價聚合／中間商網站（Quarktwin、Worldictown、Octopart、easybom、Kynix 等）。**這類價格常有虛報，不可直接用於商業決策。**
+   - `【查無】` = 本輪查過但摘要未回傳。
+   - `【本輪未查】` = 額度耗盡導致完全沒查。
+   - `【前版轉引，本輪未重驗】` = 沿用前一版的二手資料，明確標示。
+4. **本輪完成的必查項目**：CeraPlas（部分價格）、relyon piezobrush（**價格首次查到**）、Boréas 全系列（**單價首次查到**）、xMEMS 五款產品規格、TDK PowerHap／PiezoListen（**PiezoListen 價格首次查到**）、Murata CERALOCK（**成本地板首次量化**）與 microblower、Bartels mp6（**價格首次查到**）、Lee Ventus Disc Pump（壽命）、XP Power Q101-5、Coilcraft HTX7045C（**更正前版錯誤**）、離子產生器模組價格地板。
+5. **本輪仍未完成（額度截斷）**：
+   - 對照組**功率電感／磁性變壓器**的實際階梯價 →【本輪未查】。
+   - **CeraPlas 是否已停產／EOL**（2026 年狀態）→【本輪未查】。
+   - **超音波無線供電、穿金屬壁供電**是否有商品 →【本輪未查】（前版有一份專門 dossier 結論為「零商品化」，見第 5 節）。
+   - **PI / Nanomotion / PiezoMotor / Xeryon 的實際價格級距** →【查無】，只拿到 Xeryon「每多一軸 +€300」一個數字。
+   - **臭氧模組**、**汽車負離子模組具名型號** →【本輪未查】。
+   - Murata **壓電蜂鳴器**單價 →【本輪未查】。
+   - relyon **PZ2 停產時點**本輪未重驗（前版稱 2021-11-30）。
+6. **本文件未捏造任何型號、專利號、公司名或數字。**
 
 ---
 
 ## 1. 結論摘要
 
-1. **全領域唯一一個可公開查得的壓電變壓器單價：STEMINC `SMSTF50P2S6`（單層，50 kHz，2 W 級），零售 USD 23.76／2 顆 ≈ USD 11.88／顆**（小量零售價，非量產價）。這是整份研究中唯一的硬價格錨點。【轉引 D01-S10】
-2. **同一供應商的多層 PT 有型號但無價格**：`SMMTF55P4S80`（55 kHz／4 W）、`SMMTF55P6S50`（55 kHz／6 W）。頁面價格未被搜尋摘要回傳。【轉引 D01-S11、D06-56】
-3. **TDK CeraPlas 是本領域唯一有大廠背書的量產元件，但單價至今零揭露。** 已有兩份 dossier 分別查過 Mouser 與 DigiKey 產品頁，**都證實可購買、都查不到價格**。【轉引 D10-7、D10-8、D07-5】
-4. **CeraPlas 的電氣規格是清楚的**：CeraPlas F 尺寸 72 × 6 × 2.8 mm、約 8 g、共振約 50 kHz、輸入 12–24 V、輸出 < 15 kV、升壓比 > 1000、最大工作功率 8.0 W【未驗證】；封裝版 CeraPlas HF 為 47.3 × 20 × 20 mm 塑膠外殼、可焊接引腳、電漿溫度 < 50 °C，實驗樣品料號 **Z63000Z2910Z 1Z60**、評估套件 **1Z61**，2018-11-13 發表上市。【轉引 D10-4/5/51】
-5. **評估套件的實際工作點比 datasheet 保守**：key-components 的 CeraPlas HF Evaluation Kit 描述為 **24 V 單電源、預設約 4.5 W、可選 2–7 W**——比「最大 8 W」低一截，這是做功率預算時該用的數字。【轉引 D07-8】
-6. **系統級產品也已上市多年但同樣無公開價格**：relyon **piezobrush PZ3** 手持機（整機最大 18 W、電漿 < 50 °C、五種可換模組、處理速率數 cm²/s 量級）、**PZ3-i** 自動化版（平均處理寬度 5–29 mm，需壓縮乾燥空氣 CDA）。前代 **PZ2 於 2014 年為首個產品、2021-11-30 停產**。【轉引 D10-10/11/12/13、D07-2】
-7. **最重要的商業訊號是負面的**：TDK 子公司 EPCOS 2018 年取得 relyon plasma 50.2% 股權；**2026-03-04 Viromed Medical AG 簽 LOI 收購，2026-07-27 完成盡職調查，價格區間為「低至中雙位數百萬歐元」**。大廠八年後選擇退場，且對價只有數千萬歐元級。【轉引 D10-27/28/29】
-8. **競品價格錨點（非壓電）比壓電貴得多**：XP Power／EMCO **Q101-5**（10 kV／0.5 W 灌封高壓模組，輸入 5/12/15/24 V）在 Digi-Key 單價 **USD 420.06**。這證明「壓電單價高」的論證在**高壓源市場完全不成立**——CeraPlas 的對手是幾百美元的模組，不是幾分錢的電感。【轉引 D11-15】
-9. **驅動 IC 端有現貨、台灣有代理，但規格與價格全部拿不到**：Boréas **BOS1901／BOS1921／BOS1931**（CapDrive 單通道）、**BOS0614**（四通道整合感測，2022）；Mouser 有 BOS1931 產品頁；**益登科技（EDOM）已代理 BOS1901/BOS1921**，取得評估樣品與 FAE 支援的路徑在台灣是通的。但已有 agent 明講「未能取得任何一顆的實際輸出電壓、輸出電流、靜態功耗、封裝與單價」。【轉引 D21-S3b/S3d/S3f、D02-4/6】
+1. **【成本地板已被釘死】壓電陶瓷元件的量產價是 USD 0.23–0.25／顆。** Murata CERALOCK 陶瓷諧振器 `CSTNE8M00G550000R0` 3,000 顆整卷 USD 735 ＝ **USD 0.245／顆**；6,000–27,000 顆 **USD 0.239**；30,000+ **USD 0.233**【未驗證，單一摘要】。這是 3.2×1.3 mm、含內建負載電容、SMD reel 包裝的完整量產件。**「壓電本質上貴」是錯的——貴的是低量、貴的是系統整合，不是陶瓷。**（來源 61、60）
+2. **【本輪最大更正】壓電高壓源相對傳統高壓模組的價格優勢只有 2.6–2.9 倍，不是前版說的 35 倍。** DigiKey 上 CeraPlas HF 實驗樣品 `Z63000Z2910Z1Z60` 約 **USD 142.25**【未驗證】；對手 XP Power／EMCO `Q101-5`（10 kV／50 µA／0.5 W，輸入 0.7–5 V 比例控制，含穩壓）在 Worldictown 標 **USD 365.27**（庫存 2,019 顆），前版轉引 DigiKey **USD 420.06**。**而 Q101-5 是完整模組，CeraPlas 還要自己做 50 kHz 驅動級。前版拿 STEMINC USD 11.88 的裸 PT 去比 USD 420 的完整模組，是不對等比較。**（來源 2、75、74）
+3. **【首次查到】relyon piezobrush PZ3 Professional Set 官方售價 EUR 2,540.00**（relyon 線上商店），美國牙科通路 Chairside Solutions 標 **USD 3,789.00**。relyon 另提供 **PZ3 租借機（Leihgerät）**。PZ3-i 自動化版價格仍【查無】（Intertronics、igus rbtx 皆未公開）。（來源 15、16、17、18）
+4. **【首次查到】Boréas 壓電驅動 IC 是本領域唯一「元件級定價」的兩用產品**：DigiKey 單價 `BOS0614CWR` **USD 3.71**（四通道）、`BOS1921CQR` **USD 4.16**（24-VFQFN）、`BOS1931CWR` **USD 5.12**、`BOS1921CWR` **USD 5.71**（20-WFBGA）【未驗證，單一摘要】。全部從 3–5.5 V 供電輸出 **190 Vpp**，僅需 7 顆被動元件，啟動 <300 µs。（來源 26、27、28、30）
+5. **【重要產品線變動】BOS1901 已不建議用於新設計**，官方分流為 **BOS1921（觸覺）** 與 **BOS1931（微泵）**；`BOS1901-KIT-B02` 在 DigiKey 已標 obsolete。**Boréas 另開了一條「微泵液冷（Micropump Liquid Cooling）」應用線**——這代表壓電驅動 IC 的成長點正從觸覺移向散熱／流體。（來源 25、32、39）
+6. **【新能力訊號最強的一條】xMEMS `XMC-2400` µCooling「晶片上的風扇」**：9.26 × 7.6 × 1.08 mm、**< 150 mg**、比非矽主動散熱方案**小輕 96%**、氣流 **39 cc/s**、背壓 **1,000 Pa**、耗電僅約 **30 mW**、以超音波頻率運作故**人耳完全聽不到**、**IP58**。2025 Q1 送樣，CES 2025 創新獎。**台灣由益登科技（EDOM）代理**。公開單價【查無】。（來源 44、45、46）
+7. **【反面證據】壓電喇叭的元件價格高得離譜**：TDK PiezoListen `PHUA3030-049B-00-000`（30×30 mm、0.49 mm 厚、400 Hz–20 kHz、≤24 Vpp 出 80 dB）在 **DigiKey USD 93.83／Mouser USD 93.42**，九家通路報價區間 USD 78.24–93.42【未驗證】。相對於一顆傳統動圈微喇叭（< USD 1 級），**這是壓電「兩用」在消費電子撞牆的直接證據**。（來源 54、55、56）
+8. **【反面證據】離子產生這條路已經被 USD 0.80 封死**：非壓電的針尖式負離子模組 OEM 價 **USD 0.80／顆 @1,000+**（浙江樂清 Yueqing Yilerck，搜尋摘要，【未驗證】），零售模組規格 −9.0 ± 0.5 kV、耗電 < 1 W（12 V／20 mA）、≥3,200 萬 ions/cm³。**壓電變壓器在這個價格帶完全沒有進入空間。**（來源 81、82）
+9. **【前版錯誤更正】Coilcraft `HTX7045C` 不是 12 kV。** Coilcraft 官網頁面標示：繞組間電容**低至 0.7 pF**、隔離 **2800 Vrms／4000 VDC（1 分鐘 hipot）**，用於開迴路 LLC 拓樸的隔離閘極驅動偏壓電源（SiC／GaN／IGBT）。**前版寫「0.75 pF / 5 W / 12 kV」，其中 12 kV 本輪查無佐證，請勿再引用。** 價格【查無】。（來源 79、80）
+10. **【可買到的微泵價格首次落地】Bartels `mp6` 壓電微泵在 DigiKey Marketplace 約 USD 65.65–67／顆，MOQ 10**，現貨 960 顆、1,360 顆在途（2026-04-25 到貨）、預估備貨 10,000 顆、前置期 12 週【未驗證】。（來源 66、67）
 
 ---
 
 ## 2. 現況：技術 / 產品 / 玩家
 
-### 2.1 (a) 壓電變壓器元件與供應鏈
+### 2.1 冷電漿：唯一 TRL 9、且本輪終於問到價格的兩用元件
 
-**在售、有型號、可零售購買的**只有 STEMINC（Steiner & Martins，美國）一家被明確驗證：單層 `SMSTF50P2S6`（50 kHz／2 W 級）與多層 `SMMTF55P4S80`（55 kHz／4 W）、`SMMTF55P6S50`（55 kHz／6 W）。STEMINC 另宣稱其 PZT 壓電變壓器「豁免於 RoHS」——**此為供應商說法，未經法規原文查證**。【轉引 D01-S10/S11、D06-56、D06-176】
+同一片硬質 PZT 同時是（i）機械共振器、（ii）Rosen 型升壓變壓器（被動）、（iii）放電電極（主動）。TDK 技術文獻明確描述其材料為**可與內電極銅共燒的硬 PZT**，兼具高且穩定的機械 Q 值與良好機電耦合、低損耗（來源 6）。
 
-**產業結構的關鍵事實：PT 產業經歷過一次崩塌。** CCFL 背光被 LED 取代後，多數主要 PT 供應商已停止高壓 PT 的大量生產。現存被點名的供應商包括 STEMINC、**TAMURA**、**Nihon Ceratec**（宣稱升壓比 > 80、效率 > 90%）、**Face International**，以及**台灣的 ELECERAM TECHNOLOGY（多層 PT 與 CCFL 逆變器）**。【轉引 D11-18/19】
+**元件層規格（注意本輪查到的新矛盾）**
 
-> **對台灣客戶的意義**：供應鏈薄，但**在地有玩家**（ELECERAM）。這是本盤點中對「能否在台灣取得 pilot 產能」最直接的線索。ELECERAM 目前是否仍在生產、良率與單價區間為何，**本輪查無**。
-
-**CCFL 時代的 Tamura／Sumida／Murata 具體 PT 型號、上市與停產年份：【本輪未查】。**
-
-**TI／ON Semi／Microchip 是否有 PT 專用或壓電驅動 IC：【本輪未查】。** 21 號 dossier 已把「TI DRV2667／DRV8662、ST、Microchip 高壓驅動 IC 的實際架構、輸出電壓/電流、效率與單價」列為下一輪第一優先，並註明「這直接決定現貨能不能用的 go/no-go」。
-
-### 2.2 (c) 冷電漿：本領域唯一真正量產、且已有完整通路的兩用元件
-
-這是整個「壓電主動／被動兩用」命題中 **TRL 最高（8–9）** 的一支：單一片 PZT 同時是機械共振器（被動儲能）、升壓變壓器（被動）與放電電極（主動）。
-
-**元件層（TDK Electronics，前 EPCOS）**
-
-| 型號 | 定位 | 已知規格 |
-|---|---|---|
-| CeraPlas F | 裸陶瓷元件（OEM 內建） | 72 × 6 × 2.8 mm、8 g、~50 kHz、12–24 V in、< 15 kV out、8.0 W max【未驗證】 |
-| CeraPlas HF | 塑膠封裝、可焊接引腳 | 47.3 × 20 × 20 mm；電漿 < 50 °C；訂購碼 Z63000Z2910Z 1Z60 |
-| CeraPlas HF Evaluation Kit | 評估套件 | 訂購碼 1Z61；24 V 單電源；預設 ~4.5 W、可選 2–7 W |
-| CeraPlas ExploreKit（EK1250101 系列） | 乾式消毒開發套件 | 含過濾延伸單元＋Android App 可自訂消毒流程 |
-
-結構已驗證：**多層 Rosen 型**，輸入側為多層結構、**內電極為銅**（可與硬質 PZT 共燒），輸出側為單體（monolithic），於 TDK 奧地利 Deutschlandsberg 陶瓷元件能力中心開發。**銅電極這點很重要**——它代表壓電元件的成本並非鎖死在貴金屬電極上，但這條 know-how 在 TDK 手上。【轉引 D07-48、D06-174】
-
-> **一個必須釐清的規格矛盾**：不同來源分別寫「< 15 kV」與「12–24 Vpp → 最高 20 kV」。兩者不一致，**採信前務必以 TDK 原始 datasheet（`ceraplas-db.pdf`）為準**。【轉引 D10-5 vs D21-27】
-
-**上市年份**：CeraPlas HF 於 **2018-11-13** 由 GlobeNewswire 發布上市；系統端首個產品 **piezobrush PZ2 為 2014 年**。【轉引 D07-6、D07-2】
-
-**通路**：Mouser（EU／IN 站均有產品頁）、DigiKey 產品重點頁、Texim Europe、key-components、Sekorm（中國轉載，另列 `Z63000Z2910Z 1Z68` 為 F series packaged component）。**通路確實存在，但兩份 dossier 分頭查價都失敗——搜尋摘要不含價格。**【轉引 D10-7/8/45/46、D07-5】
-
-**系統層（relyon plasma GmbH，Regensburg，TDK 子公司）**
-
-- **piezobrush PZ3**：手持機，PDD® 為註冊技術名稱，核心即 CeraPlas F；整機最大 18 W、< 50 °C、五種可換模組（Standard／Nearfield／Needle／Nearfield Needle／Multigas）；處理速率數 cm²/s 量級。
-- **piezobrush PZ3-i**：自動化整合版，可掛機器人手臂當末端執行器，**已上架 igus rbtx 機器人零組件平台**；平均處理寬度 5–29 mm（需 CDA）。
-- **通路（已具名）**：英國 Intertronics、澳洲 Nano Vacuum、Ulbrich Group、Axend；**牙科通路 Chairside Solutions 販售 PZ3 Professional Set**；relyon 自營線上商店亦販售 Professional Set。
-- **已具名客戶**：PIL Sensoren GmbH（提升黏合品質）、Kunststoff-Zentrum SKZ（把 piezobrush 納入表面前處理服務組合）。
-- **售價：【查無】**——這是本輪最刺眼的缺口，因為 relyon 自己就有線上商店，理論上價格應該是公開的。
-
-**競品陣營（皆非壓電）**：歐洲三款取得 CE 醫材認證的冷電漿裝置——PlasmaDerm VU-2010（CINOGY）、kINPen MED（INP Greifswald／neoplas，Class IIa，2013 上市）、SteriPlas（Adtec）——**沒有一款是壓電式**。壓電式在醫材法規路徑上仍是 0 分。**plasmatreat、terraplasma medical 的具體型號與價格：【本輪未查】。**【轉引 D10-21/22/23】
-
-### 2.3 (e) 觸覺與 MEMS 聲學：有現貨、有大廠採用，但無價格
-
-| 廠商 | 產品 | 已驗證規格 | 價格 |
+| 來源 | 輸入 | 頻率 | 輸出 |
 |---|---|---|---|
-| Boréas Technologies（加拿大） | BOS1901 / BOS1921 / BOS1931（CapDrive 單通道）、BOS0614（四通道，2022 發表，整合感測） | 廠商宣稱：能量回收使系統整體**電流消耗最多降 90%**、較競品壓電驅動 IC 效率好 **10×**、比 LRA 省電 **20×**；BOS1901 宣稱為「市場上唯一同時觸發觸覺並感測按壓力的壓電驅動 IC」 | 【查無】 |
-| TDK | PowerHap 致動器（如 `1204H018V060`） | 壓力偵測 ≤ 25 N；激振 1 Hz–1000 Hz | 【查無】 |
-| xMEMS | Cypress（全音域 MEMS 喇叭，sound-from-ultrasound，宣布量產就緒） | 低頻 SPL **> 130 dB** | 【本輪未查】 |
-| xMEMS | Skyline DynamicVent（固態 MEMS 閥） | 開孔等效 **1.1 mm²**（雙顆 1.3 mm²）；100 Hz 衰減 **up to 25 dB** | 【本輪未查】 |
-| xMEMS | Sycamore／XMC-2400 超音波氣泵 | 【本輪未查】 | 【本輪未查】 |
-| TDK PiezoListen／Murata 壓電喇叭 | 【本輪未查】 | 【本輪未查】 | 【本輪未查】 |
+| TDK tech-library「Cold plasma from a single component」【本輪查得】 | **12 Vpp** | **52 kHz** | 「several kV」 |
+| 前版轉引 datasheet | 12–24 V | ~50 kHz | **< 15 kV**、升壓比 > 1000、8.0 W max |
+| 前版轉引 TDK featured story | 12–24 Vpp | 50 kHz | 最高 **20 kV** |
 
-**度量陷阱警告（原 dossier 明列，我照抄）**：Boréas 的「電流消耗降 90%」是**系統層級平均電流**，不是轉換效率，不能拿來當效率報給客戶；學術界同類「損耗降低 49–55%」與它不是同一個度量。【轉引 D21-26/86】
+**三個來源三組數字（「several kV」／「< 15 kV」／「20 kV」）。本輪新增的 TDK 官方技術文章寫的是最保守的一組。做功率／絕緣設計前必須向 TDK 取得正式 datasheet 定案。**
 
-**採用訊號**：Synaptics 與 Boréas 合作壓電觸控板（大廠採用）；Boréas 有車用 HMI 專稿（2020 GlobeNewswire）。**是否已有量產機種：【查無】。**【轉引 D02-7、D21-S3g】
+**價格（本輪首次取得，但全部標未驗證）**
 
-### 2.4 (b) 離子產生器 / (f) 超音波供電 / (g) 微泵：三塊幾乎空白
+| 訂購碼 | 品名 | 通路 | 價格 |
+|---|---|---|---|
+| `Z63000Z2910Z1Z60` | CeraPlas HF 實驗樣品（DK# 495-77395-ND） | DigiKey | **≈ USD 142.25**【未驗證】 |
+| `Z63000Z2910Z 1Z61` | CeraPlas HF Development Kit | DigiKey / epcos.zeano-de | 【查無】 |
+| `Z63000Z2910Z01Z69` | CeraPlas Evaluation Kit V2 | Quarktwin（聚合商） | **USD 653.40(1) / 588.06(10) / 529.25(100) / 476.33(500) / 428.70(1k)**【未驗證，中間商報價】 |
+| `Z63000Z2910Z 1Z68` | F series packaged component | Sekorm（轉載） | 【查無】 |
 
-- **(b) 離子產生器**：只查到**專利**——`US7821762B2`／`US20090135538A1`／`CN101442871B`「Piezoelectric transformer type ionizer and neutralization method」，來源指出 2008 年讓與 **SMC Corporation**（號碼與標題已驗證，讓與細節未獨立驗證），日本同族 `JP2009129673A`。市場玩家列出 Simco-Ion、Panasonic、KEYENCE、KASUGA DENKI、OMRON、Fraser、SMC、NRD，**但原 dossier 明確警告：無法確認這些公司的現售型號是否真的採用壓電變壓器，多數靜電消除器仍用傳統高壓模組。** 空清機／汽車負離子模組的型號與價格：**【本輪未查】**。【轉引 D07-55/56、D06-67】
-- **(f) 超音波無線供電／穿金屬供電**：**已有 agent 專門查過，結論是「2026 年仍查無任何具名商用產品或 ATEX/IECEx 認證方案」**——搜尋結果全是論文與專利。技術實測數字很漂亮（RPI Lawry：63.5 mm 實心鋼塊上同時傳 **50 W ＋ 12.4 Mb/s**；另有 1.045 MHz／11 mm 鋼壁／效率 60%；40 mm 不鏽鋼／15.7 W 穩壓 DC／整體效率 27.7%），但**沒有一個可以買**。醫療端最接近商業化的是超音波供電植入物（UC Berkeley → **Iota Biosciences → Astellas 2020 收購，頭期 1.275 億 USD ＋ 里程碑最高 1.765 億，合計約 3.04 億**；2024 年取得膀胱刺激的 FDA IDE 早期可行性試驗核准）。**EBR Systems WiSE-CRT 完全未查，不得引用。**【轉引 D16-14/26/169、D07-12/101】
-- **(g) 壓電微泵**：只取得 **Bartels Mikrotechnik mp6 系列壽命 > 5,000 h**、**BP7 壽命 5,000 h**（無移動閥件、unibody 結構）。**TTP Ventus／Lee Ventus Disc Pump 的 MTBF：【查無】**；Murata microblower MZB：**【本輪未查】**；三者價格全部**【本輪未查】**。【轉引 D04-S35/S36/14】
+> **必須警告**：`Z63000Z2910Z` 是 TDK 通用的樣品／套件訂購碼前綴，同一前綴下 DigiKey 還有 `1Z-2`（USD 32.93）、`1Z-4`（USD 87.81）、`1Z-5`（USD 186.84）等【未驗證】，但這些被歸類在 **Motors/Actuators**，**極可能是 PowerHap 或其他致動器套件，不是 CeraPlas**。除 `1Z60` 外不要把這些數字當成 CeraPlas 價格。
 
-### 2.5 (d) 壓電馬達／致動器：只有可靠度線索，沒有價格
+**評估套件工作點**：前版轉引 key-components，24 V 單電源、預設約 4.5 W、可選 2–7 W（比「最大 8 W」低）【前版轉引，本輪未重驗】。
 
-- Nanomotion（HR 系列）、PiezoMotor（PiezoLEGS）的**官方壽命規格：【查無】**；只拿到 Physik Instrumente PILine 的數字。**價格級距完全【本輪未查】。**【轉引 D04-13】
-- 已驗證的應用事實：壓電超音波馬達是 **MRI 導引介入機器人的事實標準**（相對於氣壓致動），Nanomotion／PI PILine 為代表；但 Nanomotion 運轉中會造成中度 SNR 損失、干擾 RF 場產生 zipper 偽影。【轉引 D15-S21】
-- **重要反證**：Physik Instrumente 的高階奈米定位**仍採用外部電容式 direct metrology，而非自感測**。這是對「同一顆元件既致動又感測」最強的商業反證。【轉引 D21-173】
+**系統層（relyon plasma GmbH，TDK 子公司）**
+
+- **piezobrush PZ3**：手持機，PDD®（Piezoelectric Direct Discharge）技術，核心即 CeraPlas；整機最大功耗 **18 W**、電漿 < 50 °C、五種可換模組（Standard／Nearfield／Needle／Nearfield Needle／Multigas）。**Professional Set = 主機 ＋ Standard 模組（處理塑膠等非導體）＋ Nearfield 模組（處理不鏽鋼、CFRP 等導體）**（來源 15、24）。
+- **價格：EUR 2,540.00（relyon 官方商店）／USD 3,789.00（Chairside Solutions 牙科通路）**。relyon 另有**租借機（Leihgerät PZ3）**產品頁——**這是一個很重要的商業訊號：需要提供租借，代表客戶對 EUR 2,540 的購買門檻有抵抗。**（來源 15、17、18）
+- **piezobrush PZ3-i**：自動化整合版，可作機器人末端執行器，已上架 **igus rbtx**；英國 Intertronics、Ulbrich Group 均為通路。**價格全部不公開**（來源 19、21、23）。
+- TDK 官網直接托管 **piezobrush PZ3 操作手冊 PDF**（`tdk-electronics.tdk.com/inf/130/Cold_Plasma/Operating_Instructions.pdf`），顯示元件商與系統商在文件層面高度綁定（來源 22）。
+
+### 2.2 壓電驅動 IC：本領域唯一「元件級定價」的兩用產品
+
+Boréas Technologies（加拿大）的 **CapDrive** 是一種帶能量回收的高壓壓電驅動架構，從 3–5.5 V 供電產生最高 **190 Vpp** 波形，僅需 **7 顆被動元件**，啟動時間 < 300 µs（來源 25、35）。
+
+| 型號 | 定位 | 關鍵規格【本輪查得】 | DigiKey 單價 |
+|---|---|---|---|
+| `BOS1901` | 單通道，第一代 | 190 Vpp；SPI；**已不建議新設計** | 停售中 |
+| `BOS1921CQR` / `CWR` | 單通道，帶進階感測（觸覺） | 190 Vpp，3–5.5 V | **USD 4.16 / 5.71**【未驗證】 |
+| `BOS1931CWR` | 單通道（**微泵／散熱**） | 190 Vpp；MIPI I3C（相容 I²C）；內建波形合成器＋2 KB RAM；SYNC 腳可讓多顆在 **2 µs** 內同步動作；啟動 < 300 µs「以動態反應熱尖峰」 | **USD 5.12**【未驗證】 |
+| `BOS0614CWR` | **四通道**，整合感測 | 可驅動 4 顆 **60 V** 致動器；**零功耗感測（ZPS）可取代機械按鍵**；10 kSPS 感測介面；4 個 GPIO 低延遲觸發；I3C；2 kB RAM；觸控取樣至 10 kHz、延遲 < 100 µs | **USD 3.71**【未驗證】 |
+| `BOS1211AQR` | **車規**，搭 TDK PowerHap | **12 V 供電輸出 120 V**；整合 low-side / high-side NMOS 閘驅做 buck-boost；整合壓電感測 | 【查無】 |
+
+**開發套件**：`BOS1211` Premium Development Kit **USD 1,047.39**、`BOS0614-KIT-B03` **USD 304.03**、`BOS1901-KIT-B02` USD 180(1) → 118.10(1k)（已 obsolete）【皆未驗證】（來源 34、29、3）。
+
+**台灣路徑已確認**：**益登科技（EDOM）同時代理 Boréas BOS1901 與 xMEMS XMC-2400**（來源 38、45）。取樣與 FAE 支援在台灣是通的。
+
+**Boréas 也賣現成的機構件**：`EXT-BT-1204 Haptic Round Button`（Mouser 有頁），內含 TDK PowerHap 1204——**這說明「壓電按鍵」已經是可以整包買現貨做 PoC 的成熟度**（來源 37）。
+
+### 2.3 xMEMS：本盤點中「新能力」訊號最強的一家
+
+| 產品 | 定位 | 規格【本輪查得】 | 狀態／價格 |
+|---|---|---|---|
+| **Cypress** ＋ **Alta-S** 驅動 ASIC | 全音域 MEMS 喇叭（sound-from-ultrasound） | 業界首款可滿足 ANC TWS 音壓需求的全固態音訊方案 | 2025-09 宣布量產就緒、立即送樣，**客戶量產出貨預計 2026 年**；價格【查無】 |
+| **Montara** / **Cowell** | 第一／第二代 | DigiTimes 專訪提到「搭 Montara 的藍牙耳機平均 US$1,500」「Cowell … 價格 US$120」——**這兩個數字讀起來是終端耳機售價而非晶片價，語意有歧義，不可當成元件價引用**【未驗證】 | Cowell 已在 TWS 市場有斬獲 |
+| **Sycamore** | 1 mm 薄近場全音域微喇叭（智慧錶／XR 眼鏡／開放式耳機） | **8.41 × 9 × 1.13 mm、150 mg**；體積為傳統動圈的 **1/7**、厚度 **1/3** | 2024-11 發表；CES 2025 首次公開展示；CES 2026 續展；價格【查無】 |
+| **Skyline DynamicVent** | 全固態 MEMS 閥（主動環境音控制） | **5.0 × 4.0 × 1.15 mm LGA**；搭 **Alpine DynamicVent 驅動 IC**（單／雙通道，**1.5 × 1.8 × 0.6 mm WLCSP**） | 2023-01 發表；價格【查無】 |
+| **XMC-2400 µCooling** | 「晶片上的風扇」 | **9.26 × 7.6 × 1.08 mm、< 150 mg**；比非矽主動散熱**小輕 96%**；**39 cc/s** 氣流、**1,000 Pa** 背壓、**~30 mW**；超音波驅動故無聲；**IP58**；兩種封裝：`XMC-2400-S` 側出風（可與 AP 疊構）／`XMC-2400` 頂出風 | 2025 Q1 送樣；CES 2025 創新獎；**EDOM 代理**；價格【查無】 |
+
+**xMEMS 沒有任何一顆產品有公開單價**——這是評估其成本可行性的最大盲點。
+
+### 2.4 微泵與微流體：價格已經落地
+
+- **Bartels `mp6`**：DigiKey Marketplace **≈ USD 65.65–67／顆、MOQ 10**；現貨 960、在途 1,360（2026-04-25）、預估備貨 10,000、前置期 12 週【未驗證】。壽命 > 5,000 h【前版轉引】。
+- **Lee Ventus（原 TTP Ventus，已被 The Lee Company 併購）Disc Pump**：五條產品線 **LT / BL / HP / XP / US**。**LT 系列連續運轉超過 17,000 小時（≈ 連續兩年）才開始出現性能衰退，累計超過 1 兆次循環**（BusinessWire 2022-10-31）；規格 **270 mbar(g) 壓力／−220 mbar(g) 真空／1.2 L/min 自由流量**。**價格【查無】**（Lee 全系列均需詢價）。（來源 69、70、71）
+- **Murata microblower `MZB1001T02`**：**20.0 × 20.0 × 1.85 mm**；操作 **10–20 Vpp**（絕對最大 30 Vpp）；**24–27 kHz**；流量 **0.7 L/min**、最大靜壓 **1,500 Pa @15 Vpp**（另一摘要寫 1.9 kPa，**矛盾**）、耗電 **0.18 W**；0–70 °C。**價格【查無】，且供貨訊號不佳**：Walmart 頁面顯示「Price when purchased online: Not Available」，TTI 顯示補貨前置期 **14 週**。（來源 63、64、65）
+
+> **1 兆次循環（Lee Ventus）是本盤點中最強的壓電可靠度數字**，可直接反駁「壓電陶瓷疲勞壽命不夠」的通論——但它是在超音波共振、微位移工作點下取得的，不能外推到大位移致動器。
+
+### 2.5 壓電變壓器（PT）供應鏈與馬達：仍然是資訊黑洞
+
+- **PT 供應商**：Metoree 的 2025 年排名列出 **Steminc、Analog Devices、TAMURA**（「Analog Devices」出現在壓電變壓器製造商榜上高度可疑，很可能是該站分類雜訊，**不採信**）。**TAMURA 官網目前仍有活躍的壓電變壓器產品頁**（`tamuracorp.com/global/products/piezo-ceramics/piezo-transformer/`）——這是本輪唯一確認的、日系大廠仍在賣 PT 的證據。**CTS**（含 Noliac）有多層壓電產品線；**Micromechatronics（mmech.com）有「Piezoelectric Transformers and DC-DC Piezo Converters」頁面**。**所有 PT 價格【查無】。**（來源 88、89、90、91）
+- **台灣 ELECERAM TECHNOLOGY 是否仍生產多層 PT** →【本輪未查】（額度耗盡），**仍是對客戶最關鍵的在地線索，下一輪務必優先。**
+- **壓電馬達價格**：`PiezoMotor Piezo LEGS LL06`（6.5 N、**16 g**、直驅無背隙、可次奈米微步）、`LT20`／`LT40` 雙腿型，線性系列涵蓋 6.5–40 N——**官方價格全部不公開，只有 eBay 二手機標價**。**Xeryon 唯一公開的價格資訊是「每增加一軸 +EUR 300，最多 6 軸」**。PI、Nanomotion 價格【查無】。（來源 85、86、87）
 
 ---
 
 ## 3. 關鍵數字表
 
-| 項目 | 數值 | 年份／狀態 | 可信度 | 出處 |
-|---|---|---|---|---|
-| **STEMINC `SMSTF50P2S6` 單層 PT（50 kHz／2 W 級）零售價** | **USD 23.76／2 顆 ≈ USD 11.88／顆** | 現行 | 中高（唯一硬價格） | D01-S10 |
-| STEMINC 多層 PT `SMMTF55P4S80`（4 W）／`SMMTF55P6S50`（6 W）價格 | **查無** | — | — | D01-S11 |
-| 同級電感／磁性變壓器單價（對照組） | **查無可驗證報價** | — | — | D01-S29 |
-| **XP Power / EMCO `Q101-5`（10 kV／0.5 W 高壓模組）Digi-Key 單價** | **USD 420.06** | 現行 | 中高 | D11-15 |
-| XP Power Q 系列體積 | 5 kV @ 0.125 in³；10 kV @ 0.614 in³；0.5 W；輸入 5/12/15/24 V | 現行 | 中 | D11-15 |
-| CeraPlas F 尺寸／重量 | 72 × 6 × 2.8 mm ／ 8.0 g | 現行 | 【未驗證】 | D10-5/46 |
-| CeraPlas F 最大工作功率 | 8.0 W | 現行 | 【未驗證】 | D10-5 |
-| CeraPlas HF 尺寸 | 47.3 × 20 × 20 mm | 2018 上市 | 高 | D10-4/7、D07-6 |
-| CeraPlas 輸入／輸出 | 12–24 V(pp) → < 15 kV（另一來源寫最高 20 kV，**矛盾**） | — | 中 | D10-5 / D21-27 |
-| CeraPlas 升壓比 | > 1000 | — | 高（多來源） | D10-2/12 |
-| CeraPlas HF 評估套件工作點 | 24 V 單電源、預設 ~4.5 W、可選 2–7 W | 現行 | 中 | D07-8 |
-| CeraPlas 訂購碼 | HF 樣品 `Z63000Z2910Z 1Z60`；評估套件 `1Z61`；F packaged `…1Z68` | — | 中 | D10-4/46 |
-| **CeraPlas 單價／壽命／MTBF／良率** | **查無（兩份 dossier 分頭查價皆失敗）** | — | — | D10-13、D07-89 |
-| piezobrush PZ3 整機最大耗電 | 18 W | 現行 | 高 | D10-10/12 |
-| piezobrush PZ3 電漿溫度 | < 50 °C | 現行 | 高 | D10-4/10/12 |
-| piezobrush PZ3-i 平均處理寬度 | 5–29 mm（需 CDA） | 現行 | 中 | D10-11 |
-| piezobrush PZ3 處理速率 | 數 cm²/s 量級 | 現行 | 中 | D10-12 |
-| **piezobrush PZ3 售價** | **查無** | — | — | D10-16 |
-| piezobrush PZ2 生命週期 | 2014 首個產品 → **2021-11-30 停產** | 已停產 | 高 | D07-2、D10-13 |
-| PDD 陣列最小元件間距 | 4 cm（寄生耦合限制） | — | 中高 | D10-14/15 |
-| TDK/EPCOS 取得 relyon 股權 | **50.2%**，2018 | 歷史 | 高 | D10-27 |
-| **Viromed 收購 relyon 對價** | **低至中雙位數百萬歐元**（LOI 2026-03-04；DD 完成 2026-07-27） | 進行中 | 中 | D10-28/29 |
-| TDK PowerHap 壓力偵測／激振 | ≤ 25 N ／ 1 Hz–1000 Hz | 現行 | 中 | D02-8 |
-| Boréas CapDrive 宣稱 | 電流消耗最多 **−90%**；優於競品壓電 IC **10×**；優於 LRA **20×** | 廠商宣稱 | 低（未獨立驗證） | D21-S2/S3c、D02-5 |
-| **Boréas 各型號輸出電壓／電流／封裝／單價** | **查無** | — | — | D21-52 |
-| xMEMS Cypress 低頻 SPL | > 130 dB | 量產就緒 | 中 | D02-58 |
-| xMEMS Skyline DynamicVent | 開孔等效 1.1 mm²；100 Hz 衰減 up to 25 dB | 發表 | 中 | D02-59 |
-| Bartels mp6／BP7 微泵壽命 | **> 5,000 h ／ 5,000 h** | 現行 | 中高（廠商 datasheet） | D04-S35/S36 |
-| 穿金屬壁供電＋通訊（實驗室） | 63.5 mm 鋼：**50 W ＋ 12.4 Mb/s**；11 mm 鋼：效率 60% | 實驗室 | 中 | D16-26、D03-72 |
-| **穿金屬壁商用產品／型號／報價** | **不存在（已專門查過）** | 2026 | 高（負面結論） | D16-14/169 |
-| Astellas 收購 Iota Biosciences | 頭期 **1.275 億 USD** ＋ 里程碑最高 1.765 億（合計 ~3.04 億），另 5 年 1.25 億投資 | 2020 | 高 | D07-12 |
-| 壓電變壓器市場規模 | **各家互相矛盾達 3 倍**：USD 220.5M(2025)→465.8M(2033)@9.8%；~500M(2025)→950M(2033)@8%；0.57B(2023)→1.88B(2030)@20.5% | — | **低，不可作決策依據** | D02-88、D01-S29/S30 |
-| 電感市場（對照） | USD 5.1B(2022) → 7.0B(2027) | — | 低 | D01-S29 |
-| 冷電漿市場 | USD 2.4–3.3B(2025) → 5–12B(2032–2035)，CAGR 14–16%；常壓段佔 66% | — | 低（市調） | D10-30/31/32 |
+> 排序：由便宜到貴。這張表本身就是本份 dossier 的主要結論。
+
+| # | 項目 | 價格 / 數值 | 年份/狀態 | 可信度 | 來源 |
+|---|---|---|---|---|---|
+| 1 | **非壓電**針尖式負離子模組（OEM，中國） | **USD 0.80／顆 @1,000+** | 現行 | 低【未驗證】 | 81 |
+| 2 | **Murata CERALOCK 陶瓷諧振器**（`CSTNE8M00G550000R0`）30,000+ | **USD 0.233／顆** | 現行 | 中【未驗證】 | 61 |
+| 3 | 同上，3,000 顆整卷 USD 735 | **USD 0.245／顆** | 現行 | 中【未驗證】 | 61 |
+| 4 | Murata 陶瓷諧振器（RS Online，1,500+） | **USD 0.374／顆** | 現行 | 中 | 60 |
+| 5 | **Boréas `BOS0614CWR`**（4 通道＋感測） | **USD 3.71** | 現行 | 中【未驗證】 | 28 |
+| 6 | **Boréas `BOS1921CQR`** | **USD 4.16** | 現行 | 中【未驗證】 | 27 |
+| 7 | **Boréas `BOS1931CWR`**（微泵版） | **USD 5.12** | 現行 | 中【未驗證】 | 30 |
+| 8 | **Boréas `BOS1921CWR`**（WFBGA） | **USD 5.71** | 現行 | 中【未驗證】 | 26 |
+| 9 | **Bartels `mp6` 壓電微泵**（MOQ 10） | **USD ~65.65–67** | 現行 | 中【未驗證】 | 66、67 |
+| 10 | **TDK PiezoListen `PHUA3030-049B-00-000`** | **DigiKey USD 93.83／Mouser USD 93.42**（9 家 78.24–93.42） | 現行 | 中【未驗證】 | 54、55、56 |
+| 11 | **TDK CeraPlas HF 樣品 `Z63000Z2910Z1Z60`** | **≈ USD 142.25** | 現行 | 低【未驗證】 | 2 |
+| 12 | **Boréas `BOS0614-KIT-B03`** 評估板 | **USD 304.03** | 現行 | 中【未驗證】 | 29 |
+| 13 | **XP Power `Q101-5`**（10 kV／50 µA／0.5 W，完整穩壓模組） | **USD 365.27**（Worldictown，庫存 2,019）／**USD 420.06**（DigiKey，前版轉引） | 現行 | 中 | 75、74 |
+| 14 | **CeraPlas Evaluation Kit V2 `…01Z69`** | **USD 653.40(1) → 428.70(1k)** | 現行 | 低【未驗證，中間商】 | 3 |
+| 15 | **Boréas `BOS1211` Premium Dev Kit** | **USD 1,047.39** | 現行 | 中【未驗證】 | 34 |
+| 16 | **relyon piezobrush PZ3 Professional Set** | **EUR 2,540.00** | 現行 | **高（官方商店）** | 15、16 |
+| 17 | 同上，美國牙科通路 | **USD 3,789.00** | 現行 | 中 | 17 |
+| 18 | **STEMINC 單層 PT `SMSTF50P2S6`**（2 W 級） | USD 23.76／2 顆 ≈ 11.88／顆 | 現行 | 中【前版轉引，本輪未重驗】 | — |
+
+**非價格關鍵規格**
+
+| 項目 | 數值 | 來源 |
+|---|---|---|
+| Boréas CapDrive 輸出 | **190 Vpp，供電 3–5.5 V，7 顆被動元件，啟動 < 300 µs** | 25、35 |
+| BOS1211 車規輸出 | **12 V → 120 V**，整合 HS/LS NMOS 閘驅＋壓電感測 | 33 |
+| BOS0614 感測 | 4×60 V；**零功耗感測 ZPS**；10 kSPS；觸控 10 kHz、延遲 < 100 µs | 36 |
+| xMEMS XMC-2400 | 9.26×7.6×1.08 mm、**<150 mg**、**39 cc/s**、**1,000 Pa**、**~30 mW**、IP58、超音波無聲 | 44、46 |
+| xMEMS Sycamore | 8.41×9×1.13 mm、150 mg、體積 1/7、厚度 1/3 | 49 |
+| xMEMS Skyline / Alpine | 5.0×4.0×1.15 mm LGA / 1.5×1.8×0.6 mm WLCSP | 48 |
+| TDK PowerHap `1204H018V060` | 12×4×1.8 mm；60 V 下驅動 100 g 質量達 **5 g(pk)**、位移 **27 µm**；每次回饋 **0.35 或 0.6 mJ**；響應 **< 1 ms**；具感測功能 | 51、52 |
+| PowerHap 按鍵組（`EXT-BT-1204` 系統值） | 0–95 V、35 µm、4.5 g、共振 175 Hz、按鍵直徑 40 mm、動質量 15 g、最大壓縮力 80 N、機械放大 2:1 | 51 |
+| TDK PiezoListen | 400 Hz–20 kHz、**≤24 Vpp 出 80 dB**、厚 **0.49 mm**、最大 34 W、阻抗 2–100 Ω；型號 PHUA2010/3015/3030/6630 | 57、58 |
+| Murata `MZB1001T02` | 20×20×1.85 mm、10–20 Vpp、24–27 kHz、0.7 L/min、1,500 Pa、0.18 W | 63、64 |
+| Lee Ventus LT 系列 | **> 17,000 h 連續運轉、> 1 兆次循環**；270 mbar(g)／−220 mbar(g)／1.2 L/min | 69、70、71 |
+| Coilcraft `HTX7045C` | **繞組間電容低至 0.7 pF；隔離 2800 Vrms / 4000 VDC 1 min**（**非 12 kV**） | 79、80 |
+| piezobrush PZ3 | 最大 18 W、< 50 °C、5 種模組 | 24 |
+| CeraPlas（TDK 技術文章版） | **12 Vpp / 52 kHz / 輸出「several kV」** ← 與 datasheet 的 <15 kV、featured story 的 20 kV **三者互相矛盾** | 6 |
 
 ---
 
-## 4. 「新能力型」應用機會（從「今天已在賣什麼」倒推）
+## 4. 「新能力型」應用機會
 
-> 本節只放**由商品化現況直接推導出來**的機會；純學術機會由其他 dossier 負責。
-> 非替代性判定：**是** = 以前物理上做不到；**半** = 以前能做但形態完全改變、開出新場景；**否** = 純粹更小更便宜的替代。
+> 判定標準：**是** = 以前物理上做不到；**半** = 以前能做但形態改變、開出新場景；**否** = 純粹更小更便宜的替代（依客戶方向限制應降權）。
 
-### 4.1 把「高壓源」從幾百美元的模組打成幾美元的陶瓷片 —— 低壓輸入高壓場產生器
+### 4.1 無聲、無旋轉件、可疊在晶片上的固態氣流源（xMEMS µCooling 路線）
 
-- **新能力是什麼**：這是本盤點最硬的一條，而且是**由價格資料直接推導**出來的。Digi-Key 上 XP Power `Q101-5`（10 kV／0.5 W）要 **USD 420.06**；STEMINC 一顆 2 W 級 PT 零售只要 **USD 11.88**。兩者不是同一規格，但**量級差 35 倍**。這意味著在「需要 kV 級電場、但功率只有零點幾到幾瓦」的所有場合，壓電路線在成本上不是劣勢而是**壓倒性優勢**。
-- **為什麼以前做不到**：傳統做法是繞線變壓器＋倍壓整流＋灌封＋安規爬電距離，體積與 BOM 都被鎖死在幾百美元、立方公分級。壓電把整個升壓段收進一片陶瓷，插拔面只剩 24 V 兩線。
-- **是否真的非替代性**：**半到是**。「產生 10 kV」本身不新；但「10 kV 源便宜到可以每台設備放十顆、可以做成耗材、可以塞進消費品內部」是新的產品型態。
-- **誰在做**：TDK CeraPlas（元件）；XP Power／EMCO 是被取代的對照組。
-- **TRL**：**8–9**（元件已量產、Mouser／DigiKey 有貨）。
-- **市場訊號**：通路完整、代理商網絡跨五國、牙科通路已在賣。
-- **最大技術障礙**：**價格資料不透明**——若 CeraPlas 實際報價落在 USD 100+ 而非 USD 10 級，這整條論證會反轉。**這是本盤點對客戶最重要的一個「必須先問到答案的問題」。**
+- **新能力**：把「產生 39 cc/s 氣流 ＋ 1,000 Pa 背壓」壓縮進 **1.08 mm 厚、150 mg、30 mW**、且因為工作在超音波頻段而**完全無噪音**、IP58 防塵防水、可與應用處理器**疊構**的固態元件。
+- **為什麼以前做不到**：軸流／離心風扇有軸承、有可聽噪音、厚度下不到 3 mm、進灰即死；熱管與均熱片是被動的，無法在偵測到熱尖峰後 **300 µs 內**主動加大氣流。壓電是唯一能同時滿足「薄到 1 mm、無移動軸承、無聽感噪音、mW 級耗電」的致動原理。
+- **是否真非替代**：**是**。這不是把風扇做小，是在風扇物理上不存在的尺寸／噪音象限開新格。
+- **誰在做**：xMEMS（XMC-2400，2025 Q1 送樣，CES 2025 創新獎，**EDOM 台灣代理**）；Boréas 已開「微泵液冷」應用線並推出 `BOS1931` 專用驅動 IC（USD 5.12），**驅動側的現貨問題已經解掉**。
+- **TRL**：**7–8**（送樣中，尚未見量產機種公告）。
+- **市場訊號**：AI PC／AI 穿戴的散熱瓶頸是真需求；CES 2026 xMEMS 仍以 µCooling ＋ Sycamore 主打 AI 穿戴。
+- **最大技術障礙**：(1) **公開單價完全查無**，若落在 USD 10+ 則對 NB/手機 BOM 是硬傷；(2) 39 cc/s 對筆電 SoC 級熱源仍偏小，需陣列化，陣列則要處理相位同步（`BOS1931` 的 SYNC 腳 2 µs 同步正是為此而設）與**進氣路徑積塵**。
 
-### 4.2 機器人末端執行器上的點狀、選擇性表面活化（唯一 TRL 9 的既有生意）
+### 4.2 「零功耗感測 ＋ 主動回饋」的固態按鍵陣列（BOS0614 路線）
 
-- **新能力是什麼**：< 20 W、< 50 °C、寬 5–29 mm 的電漿源直接裝在機械手臂上，只活化要塗膠的那一條膠道，可跟隨 3D 曲面、可進凹槽。
-- **為什麼以前做不到**：電暈是大面積平面連續料捲製程；火焰有明火與熱負荷；常壓電漿噴射功率高、噴嘴重、需外部高壓產生器與冷卻。三者都做不到「幾瓦、幾十克、隨手臂走的一條 5 mm 線」。
-- **是否真的非替代性**：**半**。活化本身不新，但選擇性／局部／低熱／輕量／可裝機器人是新的。
-- **誰在做**：relyon piezobrush PZ3-i（已上架 igus rbtx）、Intertronics 主打自動化整合。
-- **TRL**：**9（已商品化銷售中）**。
-- **市場訊號**：具名客戶 PIL Sensoren、SKZ；多國代理商。
-- **最大技術障礙**：處理速率只有數 cm²/s，客戶一要整片就輸給電暈；CDA 供氣需求削弱「純電池化」賣點。
-
-### 4.3 「驅動即感測」的觸覺 IC：已被 Boréas 佔位，切入點在別的地方
-
-- **新能力是什麼**：同一片壓電，主動端做觸覺致動、被動端做按壓力偵測，省掉外掛觸控感測器；CapDrive 再把致動器負載電容裡的能量回收再利用。
-- **是否真的非替代性**：**否到半**。這本質是「省一顆感測器 + 省電」的替代型改良——**依客戶的方向限制，權重應調低**。
-- **誰在做**：Boréas（BOS1901/1921/1931/0614）；TDK PowerHap 在元件端做同一件事；Synaptics 已合作。**台灣有 EDOM 代理，取樣路徑通。**
+- **新能力**：同一片壓電，**待機時作為零功耗（ZPS）力量感測器**，被按下時**同一片**立刻輸出 60 V 觸覺回饋；四通道、10 kHz 取樣、< 100 µs 延遲，一顆 **USD 3.71** 的 IC 取代「機械開關 ＋ 力感測器 ＋ LRA ＋ 驅動器」四件套。
+- **為什麼以前做不到**：電容式觸控要持續耗電掃描；機械開關無法感測力道且會磨損進水；LRA 有質量塊與 ms 級啟動延遲。**「不通電也能被按醒」＋「同一顆立刻回打」以前必須是兩顆不同元件。**
+- **是否真非替代**：**半**。功能上是替代（省一顆感測器 ＋ 省電），但 ZPS 讓「整機深度睡眠時仍可被實體按鍵喚醒且零靜態電流」成為可能，這在 IP68 全密封／無開孔工業設備上是新形態。
+- **誰在做**：Boréas（`BOS0614` 四通道、`BOS1921` 單通道、`BOS1211` 車規 120 V）；元件側 TDK PowerHap；**Boréas 直接賣現成的 `EXT-BT-1204` 圓形觸覺按鍵**，PoC 可以直接買整包。**EDOM 台灣代理。**
 - **TRL**：**9**。
-- **最大技術障礙**：(1) **CapDrive 的專利範圍未知**——若「從致動器負載電容回收能量」已被圈住，自研 IC 會直接撞牆（D21 已將此列為未解問題）；(2) 自感測的橋式電容失衡問題在最嚴苛應用被否決（PI 仍用外部電容式量測）。
+- **最大技術障礙**：**這條路已被 Boréas 佔位且價格壓到 USD 3.71**，自研 IC 幾乎沒有成本空間；CapDrive 的能量回收專利範圍未知（前版已列為未解問題，本輪額度不足未查）。**依客戶方向限制，建議定位為「用它，不是做它」。**
 
-### 4.4 「元件即耗材」：可拋棄式無菌一次性電漿頭
+### 4.3 可拋棄／可耗材化的 kV 級冷電漿頭
 
-- **新能力是什麼**：高壓段就是一片幾克重的陶瓷，主機端只剩 24 V。第一次讓「把高壓源做成拋棄式耗材」在成本與安規上可行。
-- **為什麼以前做不到**：傳統高壓源本身就是最貴、最重、最需安規認證的部分，不可能拋棄；高壓連接器插拔本身即失效與漏電風險點。
-- **是否真的非替代性**：**是**（拓樸改變，不是尺寸縮小）。
-- **誰在做**：**查無公開商品化案例**。TDK ExploreKit 是最接近的骨架；牙科通路已在賣 PZ3。
+- **新能力**：升壓段本身就是一片幾克重的陶瓷，主機端只剩 24 V 低壓線。第一次讓「把高壓源做成一次性無菌耗材」在成本與安規上可談。
+- **為什麼以前做不到**：傳統高壓源是整機最貴、最重、最需安規認證的部分（見 4.4 的 Q101-5 對照），不可能拋棄；高壓連接器插拔本身就是失效與漏電風險點。
+- **是否真非替代**：**是**（系統拓樸改變，不是元件縮小）。
+- **誰在做**：**查無公開商品化案例**。最接近的骨架是 TDK CeraPlas ExploreKit 與已在牙科通路銷售的 PZ3。
 - **TRL**：3–4。
-- **最大技術障礙**：**壽命數字完全查無**——一次性化反而讓「壽命短」從缺點變成特性，但必須先量化能撐多久才能定價。
+- **最大技術障礙**：**CeraPlas 樣品單價 ≈ USD 142（未驗證），對「耗材」而言貴了 1–2 個數量級**；且壽命／連續放電時數【查無】，沒有壽命數字就無法把「短壽命」轉化成「一次性」的賣點。
 
-### 4.5 明確標為「替代品」、應降權的方向（誠實揭露）
+### 4.4 低功率 kV 級電場源的成本重構（**本輪已大幅降級**）
 
-- **用 PT 做隔離閘極驅動**：對手是 ADI iCoupler（> 150 kV/µs）、Infineon 1ED3124（> 200 kV/µs）、Coilcraft HTX7045C（繞組間電容 0.75 pF、12 kV、5 W）——皆為成熟量產件。壓電既無性能跨越，單價又更高，且 PT 的數十 kHz 頻寬先天不足以支援 WBG 閘驅。**建議明確排除，理由與客戶排除「取代電感」完全同構。**【轉引 D16-158】
-- **取代電暈滾輪機做料捲表面處理**：cm²/s vs 100+ m²/hr，**規模差 3–4 個數量級**。不要碰。
-- **取代針尖式雙極離子產生器做空調除味**：模組成本極低、已大規模安裝，且該市場正因臭氧與功效爭議而信譽受損。
+- **前版主張**：STEMINC PT USD 11.88 vs XP Power Q101-5 USD 420 → 「量級差 35 倍，壓電壓倒性優勢」。
+- **本輪更正**：真正對等的比較是 **CeraPlas HF USD 142（裸元件，需外掛驅動）vs Q101-5 USD 365–420（完整穩壓模組）**，**差距只有 2.6–2.9 倍**，而且加上驅動級 BOM 與研發成本後可能歸零。**在低階市場另一頭，非壓電負離子模組只要 USD 0.80。壓電被夾在中間。**
+- **是否真非替代**：**否到半**。降級為「條件性機會」：只有在**同時**需要 kV 電場 ＋ 極薄／極輕 ＋ 無電磁干擾 ＋ 可直接當電極（省掉高壓走線）的場合，壓電才有結構性優勢；純粹「產生高壓」不是。
+- **TRL**：8–9（元件可買）。
+- **最大技術障礙**：**價格論證已被本輪自己的資料推翻，請客戶不要再用「便宜 35 倍」這個說法。**
+
+### 4.5 機器人末端的點狀選擇性表面活化（既有生意，可對標但難插入）
+
+- **新能力**：< 18 W、< 50 °C、寬 5–29 mm 的電漿源直接裝在機械手臂上，只活化要塗膠的那條膠道。
+- **是否真非替代**：**半**。
+- **誰在做**：relyon PZ3-i（已上架 igus rbtx；Intertronics、Ulbrich 為通路）。**TRL 9，但價格 EUR 2,540 級、且母公司正在被出售（見第 5 節）。**
+- **最大技術障礙**：處理速率只有數 cm²/s（前版轉引），一要整片就輸給電暈；**這是既有玩家的生意，客戶要進入只能做元件供應或做出更便宜的整機。**
+
+### 4.6 明確標為「替代品」、應排除的方向
+
+- **用 PT 做隔離閘極驅動**：本輪確認 Coilcraft `HTX7045C` 已做到 **0.7 pF 繞組間電容 ＋ 2800 Vrms 隔離**，且是為 SiC/GaN 開迴路 LLC 專門設計的量產件。壓電在此既無性能跨越、單價又高、頻寬先天不足。**排除，理由與客戶排除「取代電感」同構。**
+- **取代針尖式離子產生器**：對手 **USD 0.80**。**排除。**
+- **取代動圈微喇叭**：PiezoListen 一顆 **USD 93**。**排除。**
 
 ---
 
 ## 5. 反面證據、失敗案例與物理上限
 
-1. **最強反面訊號：TDK 的八年與退場。** 2018 年 EPCOS 取得 relyon 50.2% 股權、密集出白皮書與產品；**2026 年 TDK 選擇把 relyon 賣給德國小型上市醫材公司 Viromed，對價僅「低至中雙位數百萬歐元」**。合理解讀：**CeraPlas 沒有找到任何一個能吃掉百萬顆／年的應用**，而元件廠的商業模式需要那個量。這必須放在客戶決策的最前面。【轉引 D10-27/28/29】
-2. **PT 產業已經崩塌過一次。** CCFL → LED 之後多數領先供應商停止高壓 PT 大量生產：供應鏈薄、產能與良率經驗流失、單價高企。**這是「壓電太貴」論證的真實歷史根源**，不是臆測。【轉引 D11-18】
-3. **穿金屬壁供電近 30 年零商品化。** 起源可追至 1997 年 Connor 專利，2011 年已有 50 W／12.4 Mb/s 的媒體級成果，2015 年已有完整綜述——**2026 年仍查無任何具名商用產品或 ATEX/IECEx 認證方案**。技術可行 ≠ 市場可行。【轉引 D16-169】
-4. **消費品上的壓電兩用有明確失敗紀錄。** HEAD Intelligence 網球拍（self-powered piezoelectric damping）有專利、有 50% vs 20% 衰減宣稱，**結果停產，推測因成本**。另 SRI → Artificial Muscle Inc. → Bayer MaterialScience → ViviTouch 觸覺產品，跨越 15 年與一家化工巨頭，**今天市場上看不到**（結局未驗證，但也未顯示任何在售產品）。【轉引 D02-167、D11-167】
-5. **業界最嚴苛應用否決自感測。** Physik Instrumente 的高階奈米定位仍用**外部電容式 direct metrology**；根本原因是橋式自感測的電容失衡（C₀ 隨溫度與偏壓漂移），一失衡就把致動訊號洩進感測路徑。**若客戶賣點是「省掉感測器」，這個案例必須先被回答。**【轉引 D21-173】
-6. **物理上限（元件層）**：單顆 CeraPlas F 最大 8 W【未驗證】、PZ3 整機 18 W；Rosen 型 PT 受機械應力極限與自發熱／Q 值下降雙重限制，且自發熱會拉動共振點形成正回饋失控風險。陣列化又被 4 cm 最小間距（寄生耦合）鎖死，面功率密度約 0.5 W/cm² 量級【推論】。**靠單顆或陣列放大功率在物理上是死路。**【轉引 D10-185/186】
-7. **共振頻率漂移是全領域共同罩門，而且有專利證據。** TDK 自己佈了 `US11903321`（場強探針回授找最大場強）、`US10772182`（頻率控制法）、`WO2021122995A1`（操作方法）——**如果諧振點穩定，就不需要三個專利族來追它。**【轉引 D07-173】
-8. **含鉛與 RoHS 豁免。** STEMINC 宣稱 PZT PT「豁免於 RoHS」，但**豁免是有審查期限的政策，不是永久權利**。把長週期產品（車用、工業、醫療接觸）押在 PZT 上有法規風險。【轉引 D06-176】
-9. **市場規模數字不可用。** 壓電變壓器市場的三份報告彼此相差達 3 倍（220.5M / 500M / 570M），年份與 CAGR 都不一致。**不應作為投資依據**，只能當「有人在賣這個題目的報告」的弱訊號。【轉引 D02-177】
+1. **【本輪最重要的自我否定】前版的核心價格論證是錯的。** 「壓電高壓源比傳統模組便宜 35 倍」建立在拿 USD 11.88 的裸 PT 比 USD 420 的完整模組。本輪查到 CeraPlas HF 樣品約 **USD 142**，對比 Q101-5 的 **USD 365–420**，優勢縮到 2.6–2.9 倍，而且**壓電那一邊還要自己做驅動級**。任何以「壓電便宜」為前提的商業計畫都必須重算。
+2. **壓電產品的定價邏輯是「系統」不是「元件」。** 觀察本輪整條價格階梯：陶瓷本體 USD 0.23 → 驅動 IC USD 3.7–5.7 → 微泵 USD 66 → 喇叭 USD 93 → 電漿元件 USD 142 → 高壓模組 USD 365 → 整機 EUR 2,540。**中間差了四個數量級，而差距不在材料，在量與整合。** 換句話說：**壓電兩用元件的成本問題本質是「沒有量」，不是「物理上貴」。** 這對客戶是雙面刃——有機會，但需要先找到能吃量的應用。
+3. **relyon 需要提供「租借機」。** relyon 官方商店同時上架 `piezobrush PZ3 Professional Set`（EUR 2,540）與 `Leihgerät PiezoBrush PZ3`（租借）。**一個成熟產品需要租借方案，通常代表購買轉換率不佳。**
+4. **TDK 八年後退場。** 2018 年 EPCOS 取得 relyon 50.2% 股權；2026-03-04 Viromed Medical AG 簽 LOI 收購、2026-07-27 完成盡職調查，對價「低至中雙位數百萬歐元」【前版轉引，本輪未重驗】。以 EUR 2,540 的單價回推，這個對價對應的年出貨量級極小。**合理解讀：CeraPlas 八年沒有找到任何一個能吃掉百萬顆／年的應用。**
+5. **壓電喇叭的價格反證。** TDK PiezoListen 30×30 mm 一顆 **USD 93**，九家通路最低也要 USD 78。相對傳統動圈微喇叭（< USD 1），這是「壓電做被動聲學元件」在消費電子完全沒有成本立足點的直接證據。（xMEMS 走的是完全不同的 MEMS 矽製程路線，成本結構不同，但同樣**沒有公開單價**。）
+6. **離子產生市場已被 USD 0.80 封死。** 非壓電負離子模組 −9 kV、< 1 W、OEM USD 0.80／顆 @1k。**任何「用壓電做便宜高壓源」的論證，在這個市場自動失效。**
+7. **Murata microblower 的供貨訊號不佳。** `MZB1001T02` 在 Walmart 顯示無法線上購買、TTI 顯示補貨前置期 14 週。**這是一顆 2014 年就有 datasheet 的老產品，十二年後仍是這個供貨狀態，說明壓電微氣泵在消費市場並沒有跑出量。**
+8. **BOS1901 的世代更替說明產品線在收斂而非擴張**：第一代已不建議新設計，並被拆成觸覺（1921）與微泵（1931）兩條——**Boréas 把資源從「觸覺」分了一半到「散熱／流體」，本身就是「觸覺市場不夠大」的訊號。**
+9. **CeraPlas 的規格三方矛盾未解**：TDK 自家技術文章寫 12 Vpp / 52 kHz / 「several kV」，datasheet 系來源寫 < 15 kV / 8 W，另一篇 TDK featured story 寫最高 20 kV。**一個上市八年的產品，官方文獻對輸出電壓給不出一致數字，這件事本身就值得警惕。**
+10. **前版引用的 Coilcraft「12 kV」為錯誤資訊**，本輪確認官方頁面為 2800 Vrms / 4000 VDC。**請下游文件一併更正。**
+11. **物理上限（沿用前版，本輪未重驗）**：單顆 CeraPlas F 最大 8 W、PZ3 整機 18 W；Rosen 型 PT 受機械應力極限與自發熱／Q 值下降雙重限制；陣列化受 4 cm 最小間距（寄生耦合）限制，面功率密度約 0.5 W/cm² 量級。**靠單顆或陣列放大功率在物理上是死路。**
+12. **穿金屬壁供電近 30 年零商品化**【前版轉引，本輪未重驗】：實驗室已達 63.5 mm 鋼上 50 W ＋ 12.4 Mb/s，但 2026 年仍查無任何具名商用產品或 ATEX/IECEx 方案。
+13. **業界最嚴苛應用否決自感測**【前版轉引】：Physik Instrumente 高階奈米定位仍用外部電容式 direct metrology。**若客戶賣點是「省掉感測器」，這個案例必須先被回答。**（不過本輪的 BOS0614 ZPS 與 PowerHap 的感測功能顯示，在**低精度、大訊號**的按鍵／泵浦場景，自感測已經商品化——差別在精度等級。）
 
 ---
 
-## 6. 未解問題（給下一輪研究，已按優先序排列）
+## 6. 未解問題
 
-1. **【最高優先】直接詢價，不要再靠搜尋。** 本輪最大結論是「價格資料不存在於公開網路」。建議直接發詢價信：
-   - TDK Electronics / Mouser / DigiKey / Texim Europe / key-components：**CeraPlas F 與 HF 的 1k / 10k / 100k 階梯價**，並索取 reliability report（MTBF、連續放電時數、輸出電壓衰退曲線）。
-   - relyon plasma 線上商店：**piezobrush PZ3 Professional Set 標價**（該店應有公開價格，只是搜尋摘要沒帶出來）。
-   - STEMINC、TDK、富士セラミックス、CTS／Noliac、APC International：**量產級 PT 單價**。
-   - **ELECERAM TECHNOLOGY（台灣）**：是否仍生產多層 PT、pilot 產能、良率與單價區間。**這是決定客戶能否在本地做 PoC 的關鍵。**
-2. **本輪額度歸零而完全未查的清單（原樣照抄，供下一輪直接執行）**：(b) 壓電式離子產生器／負離子／臭氧模組的在售型號與價格；(d) PI／Nanomotion／PiezoMotor／Xeryon／TDK 壓電馬達價格級距；(e) xMEMS Sycamore／XMC-2400、TDK PiezoListen、Murata 壓電喇叭規格與價格，Boréas 各型號 datasheet 與單價；(f) 超音波供電商用模組、EBR Systems WiSE-CRT（**完全未查，勿引用**）；(g) Bartels mp6 / Lee Ventus Disc Pump / Murata MZB 價格；CCFL 時代 Tamura／Sumida／Murata PT 型號與停產年；TI DRV2667／DRV8662、ON Semi、Microchip 壓電驅動 IC 的架構、輸出規格與單價。
-3. **CeraPlas 輸出電壓的規格矛盾（< 15 kV vs 最高 20 kV）必須以原始 datasheet 釐清。**
-4. **Viromed × relyon 交易的後續**：交割是否完成、Viromed 要推哪一條醫材適應症、是否取得 CE Class IIa。**這是未來 12 個月內最能證實或證偽本領域的單一事件。**
-5. **Boréas CapDrive 的專利範圍**：若「從致動器負載電容回收能量」已被圈死，客戶自研驅動 IC 會直接撞牆。建議以 Boréas Technologies 為受讓人做專利檢索。
+1. **【最高優先，且本輪已證實有效】直接向通路詢價，不要靠搜尋。** 本輪證明 DigiKey／Mouser／官方商店的價格是查得到的（Boréas、PiezoListen、piezobrush 都查到了），查不到的只有 TDK CeraPlas 與 xMEMS。應直接發詢價信：
+   - **TDK Electronics / Mouser / DigiKey**：`Z63000Z2910Z1Z60`（CeraPlas HF）與 CeraPlas F 的 **1k / 10k / 100k 階梯價**，並索取 reliability report（連續放電時數、輸出電壓衰退曲線、MTBF）。**同時確認 CeraPlas 是否已 EOL——這是本輪未查完的關鍵風險。**
+   - **xMEMS / 益登科技（EDOM）**：`XMC-2400` 的量產階梯價與最小起訂量。**EDOM 同時代理 Boréas 與 xMEMS，是台灣客戶一次問到兩條線的最短路徑。**
+   - **TAMURA**：壓電變壓器量產單價與最小起訂量（本輪確認其產品頁仍在線）。
+   - **ELECERAM TECHNOLOGY（台灣）**：是否仍生產多層 PT、pilot 產能、良率與單價區間。**本輪額度不足未查，仍是台灣在地 PoC 的關鍵。**
+   - **The Lee Company（Lee Ventus）**：LT/HP/XP 系列價格（唯一有 1 兆次循環背書的壓電泵）。
+2. **CeraPlas 輸出電壓的三方矛盾（several kV / < 15 kV / 20 kV）必須以原始 datasheet 定案。** 本輪反而讓矛盾從兩方變成三方。
+3. **對照組完全缺席**：同等級功率電感、磁性變壓器的實際階梯價本輪完全未查（額度耗盡）。**沒有這組數字，「壓電 vs 磁性」的成本比較無法收斂。** 下一輪應查 Coilcraft/Würth/TDK 的 10 µH/3 A 級電感在 1k/10k 的單價，以及 `HTX7045C` 的實際報價。
+4. **Boréas CapDrive 的專利範圍**：若「從致動器負載電容回收能量」已被圈死，客戶自研驅動 IC 會直接撞牆。本輪額度不足未查，**建議以 Boréas Technologies 為受讓人做專利檢索**。
+5. **xMEMS 的製程與成本結構**：xMEMS 走的是矽 MEMS 壓電薄膜（非塊材 PZT），成本曲線與 TDK/Murata 的陶瓷路線完全不同。**客戶若要投入，必須先決定站在「塊材陶瓷」還是「薄膜 MEMS」這一邊——這是兩個不同的產業。** 本輪資料不足以判斷。
+6. **Viromed × relyon 交易是否完成交割**、Viromed 要推哪條醫材適應症【本輪未查】。**這是未來 12 個月最能證實／證偽本領域的單一事件。**
 
 ---
 
 ## 7. 來源清單
 
-> **重要說明**：以下 URL **全部由本專案其他 agent 在其 dossier 中檢索取得並附上**，本輪我沒有親自開啟或驗證任何一個（WebFetch 被封鎖、WebSearch 額度為 0）。編號後的 `[Dxx]` 標示該 URL 出自同目錄哪一份 dossier，便於追溯原始標註（含各自的「未驗證」標記）。
+> 標註規則：`【本輪】` = 本輪 WebSearch 摘要直接回傳；`【聚合】` = 報價聚合／中間商網站，價格可信度低。所有 URL 均未經 WebFetch 開啟驗證（環境限制）。
 
-### 7.1 價格與型號錨點
+### 7.1 TDK CeraPlas（元件層）
 
-1. STEMINC — Single Layer Piezo Electric Transformer 50 kHz (`SMSTF50P2S6`)。**零售 USD 23.76 / 2 顆 ≈ USD 11.88/顆**。 [D01] https://www.steminc.com/PZT/en/single-layer-piezo-electric-transformer-50-khz
-2. STEMINC — Multilayer Piezo Transformer 55 kHz 4 W (`SMMTF55P4S80`)。多層 PT 產品線；價格未取得；PZT PT「豁免於 RoHS」之供應商說法（未驗證）。 [D01/D06] https://www.steminc.com/PZT/en/multilayer-piezo-transformer
-3. XP Power Q Series 產品頁 — 5 kV @ 0.125 in³、10 kV @ 0.614 in³、0.5 W、輸入 5/12/15/24 V。 [D11] https://www.xppower.com/product/Q-Series
-4. Digi-Key — XP Power `Q101-5`（10 kV / 0.5 W）**單價 USD 420.06**。非壓電高壓模組的價格對照組。 [D11] https://azcus.digikey.com/en/products/detail/xp-power/Q101-5/5873625
+1. DigiKey — `Z63000Z2910Z01Z69`（CeraPlas Evaluation Kit V2，歸類 Development Boards/Kits）。【本輪】 https://www.digikey.com/en/products/detail/epcos-tdk-electronics/Z63000Z2910Z01Z69/13174397
+2. DigiKey (BG) — `Z63000Z2910Z1Z60`（CeraPlas HF 樣品，DK# 495-77395-ND）。**摘要報 USD 142.25**。【本輪／未驗證】 https://digikey.bg/product-detail/en/epcos-tdk/Z63000Z2910Z1Z60/495-77395-ND/9698000
+3. Quarktwin — `Z63000Z2910Z01Z69` CeraPlas Evaluation Kit V2 階梯價 **653.40 / 588.06 / 529.25 / 476.33 / 428.70**。【聚合／未驗證】 https://www.quarktwin.com/product-detail/epcos---tdk-electronics-z63000z2910z01z69/7200374
+4. micro-processor.pl — 托管 `e0-z63000z2910z1z60.pdf`「CeraPlas Element Piezoelectric Based Cold Plasma Generator」datasheet。【本輪】 https://www.micro-processor.pl/parts-file/e0-z63000z2910z1z60.pdf
+5. epcos.zeano-de.com — `Z63000Z2910Z1Z61` CERAPLAS HF DEVELOPMENT KIT。【本輪，價格未回傳】 https://epcos.zeano-de.com/product/Z63000Z2910Z1Z61/03906789
+6. TDK Electronics tech-library —「Cold plasma from a single component」。**12 Vpp / 52 kHz / 輸出 several kV；硬 PZT 共燒銅內電極**。【本輪】 http://en.tdk.eu/tdk-en/373562/tech-library/articles/applications---cases/applications---cases/cold-plasma-from-a-single-component/1109546
+7. Mouser (IN) — CeraPlas HF Piezoelectric Plasma Generator 產品頁。【本輪，價格未回傳】 https://www.mouser.in/new/epcos/epcos-ceraplas-hf/
+8. relyon plasma — CeraPlas HF plasma generator from EPCOS/TDK。【本輪】 https://www.relyon-plasma.com/plasma-technology/ceraplas-en/?lang=en
+9. TDK — CeraPlas ExploreKit for decontamination。【本輪】 https://www.tdk-electronics.tdk.com/en/2910748/products/product-catalog/cold-plasma-technology/ceraplas-explorekit
+10. DigiKey — Compact CeraPlas for Cold Plasma Tech（product highlight）。【本輪】 https://www.digikey.com/en/product-highlight/e/epcos/compact-ceraplas-for-cold-plasma-technology
+11. GlobeNewswire — TDK Introduces CeraPlas HF（2018-11-13 上市）。【本輪】 https://www.globenewswire.com/news-release/2018/11/13/1650541/0/en/TDK-Introduces-CeraPlas-HF-Compact-Cold-Plasma-Generator-Element.html
+12. TDK 新聞稿 — Compact CeraPlas HF element for cold plasma。訂購碼 `Z63000Z2910Z 1Z60`（樣品）、`1Z61`（含控制電子的套件）。【本輪】 https://www.tdk-electronics.tdk.com/en/373388/company/press-center/press-releases/press-releases/plasma-generators-compact-ceraplas-hf-element-for-cold-plasma/2435688
+13. Sekorm — `Z63000Z2910Z 1Z68` F series packaged component 初步資料。【本輪】 https://en.sekorm.com/doc/2581106.html
+14. Texim Europe — Cold atmospheric pressure plasma（通路商技術文件 PDF）。【本輪】 https://www.texim-europe.com/getfile.ashx?id=113097
 
-### 7.2 TDK CeraPlas（元件層）
+### 7.2 relyon plasma（系統層）與通路
 
-5. TDK 新聞稿 — Compact CeraPlas HF element for cold plasma。HF 尺寸 47.3×20×20 mm、<50 °C、料號。 [D10] https://www.tdk-electronics.tdk.com/en/373388/company/press-center/press-releases/press-releases/plasma-generators-compact-ceraplas-hf-element-for-cold-plasma/2435688
-6. TDK CeraPlas datasheet PDF（原 agent 未能開啟，僅見搜尋摘要）。CeraPlas F 尺寸、8 W、50 kHz、<15 kV。 [D10] https://www.tdk-electronics.tdk.com/download/2307712/39eb3392c71d1191b103aa31c6a0f1c5/ceraplas-db.pdf
-7. TDK 技術文章 — Cold plasma from a single component。多層 Rosen 型、硬 PZT 共燒銅內電極、piezobrush PZ2（2014）為首個產品。 [D10/D07/D02] https://www.tdk-electronics.tdk.com/en/373562/tech-library/articles/applications-cases/applications-cases/cold-plasma-from-a-single-component/1109546
-8. GlobeNewswire — TDK Introduces CeraPlas HF Compact Cold Plasma Generator Element（**2018-11-13 上市日期**）。 [D10/D07] https://www.globenewswire.com/news-release/2018/11/13/1650541/0/en/TDK-Introduces-CeraPlas-HF-Compact-Cold-Plasma-Generator-Element.html
-9. key-components — EPCOS/TDK CeraPlas HF Evaluation Kit。**24 V 單電源、預設 ~4.5 W、可選 2–7 W**。 [D07] https://www.key-components.com/news/epcos-tdk-ceraplas-hf-evaluation-kit.html
-10. TDK — CeraPlas ExploreKit for decontamination（含過濾單元、Android App）。 [D10] https://www.tdk-electronics.tdk.com/en/2910748/products/product-catalog/cold-plasma-technology/ceraplas-explorekit
-11. Mouser（EU）— CeraPlas HF 產品頁。通路可得性；**搜尋摘要未見價格**。 [D10] https://eu.mouser.com/new/epcos/epcos-ceraplas-hf/
-12. Mouser（IN）— CeraPlas HF Piezoelectric Plasma Generator。同上，證明實際可購買。 [D07] https://www.mouser.in/new/epcos/epcos-ceraplas-hf/
-13. DigiKey — CeraPlas 產品重點頁。通路可得性；**未見價格**。 [D10] https://www.digikey.com/en/product-highlight/e/epcos/compact-ceraplas-for-cold-plasma-technology
-14. Sekorm — CeraPlas Element 初步資料（`Z63000Z2910Z 1Z68`，F series packaged component）。第三方轉載規格頁。 [D10] https://en.sekorm.com/doc/2581106.html
-15. Texim Europe — Cold atmospheric pressure plasma promises decisive benefits（PDF）。通路商技術文件。 [D10] https://www.texim-europe.com/getfile.ashx?id=113097
-16. TDK — Cold Plasma's Potential: Revolutionizing Forefront Medical Care。12–24 Vpp / 50 kHz / <50 °C。 [D07] https://www.tdk.com/en/featured_stories/entry_041.html
+15. relyon plasma 官方商店 — piezobrush PZ3 Professional Set。**EUR 2,540.00**；內含主機＋Standard 模組＋Nearfield 模組。【本輪，可信度高】 https://www.relyon-plasma.com/produkt/piezobrush-pz3-professional-set/
+16. AERA-Online — PiezoBrush PZ3 Professional Set 價格比較頁。【本輪】 https://www.aera-online.de/Asps/Artikel.asp?gArtikelID=1212191
+17. Chairside Solutions（美國牙科通路）— piezobrush PZ3 Professional Set **USD 3,789.00**。【本輪】 https://www.chairsidesolutions.com/shop/p/relyonplasmapiezobrush
+18. relyon plasma — **Leihgerät（租借機）PiezoBrush PZ3**。【本輪，商業訊號】 https://www.relyon-plasma.com/produkt/leihgeraet-piezobrush-pz3/
+19. Intertronics（UK）— PiezoBrush PZ3-i（半自動／自動化整合版）。【本輪，價格未公開】 https://www.intertronics.co.uk/product/piezobrush-pz3-i-plasma-surface-treatment-for-semi-automated-or-automated-use/
+20. Intertronics Shop — PiezoBrush PZ3 手持機。【本輪，價格未回傳】 https://intertronics.shop/product/piezobrush-pz3-handheld-plasma-surface-treatment/
+21. igus rbtx — piezobrush PZ3-i 作為機器人末端執行器上架。【本輪】 https://rbtx.com/en-US/components/end-effectors/cold-plasma-device-improved-adhesion-ink-glue-relyon-plasma-piezobrush-pz3-i
+22. TDK Electronics 托管 — piezobrush PZ3 Operating Instructions（PDF）。【本輪】 https://www.tdk-electronics.tdk.com/inf/130/Cold_Plasma/Operating_Instructions.pdf
+23. Ulbrich Group — PIEZOBRUSH PZ3i 通路頁。【本輪】 https://www.ulbrich-group.com/piezobrush-pz3i
+24. relyon plasma — piezobrush PZ3 產品頁（18 W、< 50 °C、五模組）。【本輪】 https://www.relyon-plasma.com/piezobrush-pz3/?lang=en
 
-### 7.3 relyon plasma（系統層）與通路
+### 7.3 Boréas Technologies（驅動 IC）
 
-17. relyon plasma — piezobrush PZ3 產品頁。**18 W、<50 °C、五種模組**。 [D10] https://www.relyon-plasma.com/piezobrush-pz3/?lang=en
-18. relyon plasma — piezobrush PZ3-i 頁。自動化整合版、**處理寬度 5–29 mm（CDA）**。 [D10] https://www.relyon-plasma.com/piezobrush-pz3-i/?lang=en
-19. Korzec et al. — piezobrush PZ3 Part I: Operation Principle and Characteristics（白皮書 PDF）。**處理速率數 cm²/s**。 [D10] https://www.relyon-plasma.com/wp-content/uploads/2024/02/201024_whitepaper_piezobrush_PZ3_1.pdf
-20. relyon plasma — piezobrush PZ2 頁。**2021-11-30 停產**，由 PZ3 接替。 [D10] https://www.relyon-plasma.com/relyon-plasma-products/piezobrush-pz2/?lang=en
-21. relyon plasma 線上商店 — piezobrush PZ3 Professional Set。**下一輪應直接在此取價**。 [D10] https://www.relyon-plasma.com/produkt/piezobrush-pz3-professional-set/?lang=en
-22. Intertronics（UK）— PiezoBrush PZ3 產品頁。英國通路。 [D10] https://intertronics.co.uk/product/piezobrush-pz3-handheld-plasma-surface-treatment/
-23. Chairside Solutions — relyon plasma piezobrush PZ3 Professional Set。**牙科通路已在銷售的證據**。 [D10] https://www.chairsidesolutions.com/shop/p/relyonplasmapiezobrush
-24. igus rbtx — piezobrush PZ3-i 作為機器人末端執行器上架。自動化整合市場訊號。 [D10] https://rbtx.com/en-US/components/end-effectors/cold-plasma-device-improved-adhesion-ink-glue-relyon-plasma-piezobrush-pz3-i
-25. Ulbrich Group — piezobrush PZ3「世界最小電漿手持機」。通路行銷語言。 [D10] https://www.ulbrich-group.com/piezobrush-pz3-the-world-s-smallest-plasma-handheld-device
+25. Boréas — CapDrive Ultra-Low Power Piezo Driver (BOS1901)。**190 Vpp / 3–5.5 V / 7 顆被動元件 / 啟動 < 300 µs；已不建議新設計，改用 BOS1921（觸覺）與 BOS1931（微泵）**。【本輪】 https://www.boreas.ca/products/bos1901-piezo-haptic-driver
+26. DigiKey — `BOS1921CWR`（20-WFBGA）**USD 5.71**。【本輪／未驗證】 https://www.digikey.com/en/products/detail/boreas-technologies/BOS1921CWR/21704163
+27. Mouser — `BOS1921CQR`（24-VFQFN）**USD 4.16**（DigiKey 報價）。【本輪／未驗證】 https://www.mouser.com/ProductDetail/Boreas-Technologies/BOS1921CQR
+28. DigiKey — `BOS0614CWR` **USD 3.71**。【本輪／未驗證】 https://www.digikey.com/en/products/detail/boreas-technologies/BOS0614CWR/25319328
+29. DigiKey — `BOS0614-KIT-B03` **USD 304.03**。【本輪／未驗證】 https://www.digikey.com/en/products/detail/boreas-technologies/BOS0614-KIT-B03/25319334
+30. Mouser — `BOS1931CWR`（DigiKey 報 **USD 5.12**）。【本輪／未驗證】 https://www.mouser.com/ProductDetail/Boreas-Technologies/BOS1931CWR
+31. Boréas — CapDrive Ultra-Low Power Piezo Driver (BOS1931)。190 Vpp、MIPI I3C、2 KB RAM、SYNC 2 µs。【本輪】 https://www.boreas.ca/products/capdrive%C2%AE-ultra-low-power-piezo-driver-bos1931
+32. Boréas — **Micropump Liquid Cooling Application** 頁。**產品線從觸覺擴向散熱／流體的證據**。【本輪】 https://www.boreas.ca/pages/micropump-liquid-cooling
+33. Boréas — CapDrive Powerful Piezo Driver for Automotive (BOS1211)。**12 V → 120 V**，驅動 TDK PowerHap 120 V 致動器；整合 HS/LS NMOS 閘驅 ＋ 壓電感測。【本輪】 https://www.boreas.ca/products/bos1211-piezo-haptic-driver
+34. DigiKey — BOS1211 Starter Development Kit（Premium Dev Kit **USD 1,047.39**）。【本輪／未驗證】 https://www.digikey.com/en/product-highlight/b/boreas/bos1211-starter-development-kit
+35. DigiKey 托管 — BOS1921/BOS1931 Product Datasheet BT015DDS01.01 Issue 6（PDF）。【本輪】 https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/6662/2158_BOS19_Datasheet.pdf
+36. DigiKey 托管 — BOS0614 Product Datasheet BT005EDS01.01 Issue 4（PDF）。ZPS、10 kSPS、< 100 µs。【本輪】 https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/6662/2158_BOS0614CWR.pdf
+37. Boréas — `EXT-BT-1204` Haptic Round Button（內含 TDK PowerHap 1204，Mouser 有頁）。【本輪】 https://www.boreas.ca/products/ext-bt-1204-haptic-round-button
+38. EDOM 益登科技 — BOS1901 Piezo Haptic Driver（**台灣代理**）。【本輪】 https://www.edomtech.com/en/product-detail/bos1901-piezo-haptic-driver/
+39. DigiKey — `BOS1901-KIT-B`／`-B02`（B02 已 obsolete）。【本輪】 https://www.digikey.com/en/products/detail/boreas-technologies/BOS1901-KIT-B/10258692
+40. Adafruit blog — EYE ON NPI: Boréas BOS1931 High-Efficiency Piezo Driver（2025-03-20，DigiKey 合作）。【本輪】 https://blog.adafruit.com/2025/03/20/eye-on-npi-boreas-technologies-bos1931-high-efficiency-piezo-driver-eyeonnpi-digikey-digikey
 
-### 7.4 併購與商業訊號
+### 7.4 xMEMS
 
-26. TDK 新聞稿 — EPCOS acquires majority stake in relyon plasma（**50.2%，2018**）。 [D10] https://www.tdk-electronics.tdk.com/en/373388/company/press-center/press-releases/press-releases/tdk-subsidiary-epcos-acquires-majority-stake-in-relyon-plasma/2240584
-27. EQS / TradingView — Viromed Medical AG signs LOI to acquire relyon plasma GmbH（**2026-03-04**）。 [D10] https://www.tradingview.com/news/eqs:f46067e6f094b:0-viromed-medical-ag-signs-letter-of-intent-to-acquire-relyon-plasma-gmbh-strategic-step-toward-integrated-platform-for-cold-plasma-technology/
-28. Viromed Medical AG — Update on the planned acquisition of relyon plasma（**DD 於 2026-07-27 完成；對價低至中雙位數百萬歐元**）。 [D10] https://www.webdisclosure.com/press-release/viromed-medical-ag-etr-viromed-medical-ag-update-on-the-planned-acquisition-of-relyon-plasma-gmbh-IFaMLec9JBo
-29. TDK × relyon plasma 合作新聞稿。產業化路徑與夥伴關係。 [D07] https://www.tdk-electronics.tdk.com/en/373388/company/press-center/press-releases/press-releases/piezo-transformers-and-plasma-generators-tdk-cooperates-with-relyon-plasma-to-develop-and-manufacture-cutting-edge-plasma-solutions/1416224
+41. xMEMS 新聞稿 — Cypress 量產就緒（全音域 MEMS 喇叭）。【本輪】 https://xmems.com/press-release/xmems-announces-mass-production-readiness-of-cypress-the-worlds-first-full-range-mems-speaker-for-wireless-earbuds/
+42. BusinessWire（2025-09-09）— 同上。**Cypress ＋ Alta-S 立即送樣，客戶量產出貨預計 2026 年**。【本輪】 https://www.businesswire.com/news/home/20250909860435/en/xMEMS-Announces-Mass-Production-Readiness-of-Cypress-The-Worlds-First-Full-Range-MEMS-Speaker-for-Wireless-Earbuds
+43. DigiTimes — Q&A with xMEMS CEO Joseph Jiang。提到 Montara 耳機均價 US$1,500、Cowell US$120（**語意歧義：疑為終端售價，非晶片價**）。【本輪／未驗證】 https://www.digitimes.com/news/a20240325PD205/xmems-mems-speakers-ic.html
+44. xMEMS 新聞稿 — 1mm-Thin Active Micro-Cooling "Fan on a Chip"（XMC-2400）。【本輪】 https://xmems.com/press-release/xmems-introduces-1mm-thin-active-micro-cooling-fan-on-a-chip/
+45. EDOM 益登科技 — XMC-2400 µCooling Fan on a Chip（**台灣代理**）。【本輪】 https://www.edomtech.com/en/product-detail/xmc-2400-cooling-fan-on-a-chip/
+46. CNX Software（2024-08-21）— XMC-2400 規格：9.26×7.6×1.08 mm、<150 mg、39 cc/s、1,000 Pa、~30 mW、IP58、兩種封裝。【本輪】 https://www.cnx-software.com/2024/08/21/xmems-xmc-2400-1mm-thin-micro-cooling-fan-on-a-chip-for-ultrathin-devices-and-ssds/
+47. xMEMS — Micro Cooling (µCooling) 產品總覽。【本輪】 https://xmems.com/microcooling/
+48. BusinessWire（2023-01-04）— Skyline，世界首款全固態 MEMS DynamicVent。**5.0×4.0×1.15 mm LGA ＋ Alpine 驅動 IC 1.5×1.8×0.6 mm WLCSP**。【本輪】 https://www.businesswire.com/news/home/20230104005123/en/xMEMS-Announces-Skyline-the-Worlds-First-Solid-State-MEMS-DynamicVent-Enabling-Active-Ambient-Control-for-Next-Generation-TWS-and-Hearing-Aids
+49. BusinessWire（2024-11-19，經 financialcontent 轉載）— Sycamore：**8.41×9×1.13 mm、150 mg、體積 1/7、厚度 1/3**。【本輪】 https://markets.financialcontent.com/pennwell.cabling/article/bizwire-2024-11-19-xmems-introduces-sycamore-the-worlds-first-1-mm-thin-near-field-full-range-mems-micro-speaker-for-smart-watches-xr-glasses-and-goggles-open-fit-earbuds-and-other-applications
+50. xMEMS — CES 2026 將展示 µCooling ＋ Sycamore（AI 穿戴）。【本輪】 https://xmems.com/press-release/xmems-to-showcase-breakthrough-%C2%B5cooling-and-sycamore-mems-loudspeaker-technologies-powering-the-next-generation-of-ai-wearables-at-ces-2026/
 
-### 7.5 觸覺 / 驅動 IC / MEMS 聲學
+### 7.5 TDK PowerHap / PiezoListen
 
-30. Boréas Technologies — BOS1901 Piezo Haptic Driver 產品頁。「市場上唯一同時觸發觸覺並感測按壓力的壓電驅動 IC」。 [D02/D21] https://www.boreas.ca/products/bos1901-piezo-haptic-driver
-31. Boréas — CapDrive Technology。從致動器負載電容回收能量；比 LRA 省電 20×、比競品壓電 IC 效率好 10×（廠商宣稱）。 [D02/D21] https://www.boreas.ca/pages/capdrive-technology
-32. Boréas blog — The 6 Elements of a Quality Piezo Driver。「電流消耗降低最多 90%」宣稱出處。 [D21] https://pages.boreas.ca/blog/piezo-haptics/6-most-important-elements-to-look-for-in-a-piezo-driver
-33. Mouser — Boréas `BOS1931` High-Efficiency Piezo Driver。**通路產品頁，可直接用於詢價**。 [D21] https://www.mouser.com/new/boreas-technologies/boreas-bos1931-piezo-haptic-driver/
-34. EDOM（益登科技）— BOS1901 Piezo Haptic Driver。**台灣代理，取樣與 FAE 路徑通**。 [D21] https://www.edomtech.com/en/product-detail/bos1901-piezo-haptic-driver/
-35. PRNewswire — Boréas 四通道整合感測驅動 IC（`BOS0614`, 2022）。 [D02/D21] https://www.prnewswire.com/news-releases/boreas-technologies-announces-four-channel-haptic-driver-with-integrated-sensing-301563047.html
-36. Synaptics × Boréas 壓電觸控板合作新聞稿。大廠採用訊號。 [D02] https://www.synaptics.com/company/news/synaptics-partners-boreas-technologies-deliver-high-performance-piezo-haptic-trackpads
-37. GlobeNewswire — Boréas Piezo Driver Chip Advances Realistic Haptic Feedback in Automotive HMIs（2020）。車用採用訊號。 [D21] https://www.globenewswire.com/news-release/2020/01/07/1967204/0/en/Bor%C3%A9as-Technologies-Piezo-Driver-Chip-Advances-Realistic-Haptic-Feedback-in-Automotive-HMIs.html
-38. TDK — PowerHap Actuators 產品頁。壓力偵測 ≤25 N、激振 1 Hz–1000 Hz。 [D02] https://product.tdk.com/en/products/sw_piezo/haptic/powerhap/index.html
-39. xMEMS — Cypress 量產就緒新聞稿。sound-from-ultrasound、低頻 SPL >130 dB。 [D02] https://xmems.com/press-release/xmems-announces-mass-production-readiness-of-cypress-the-worlds-first-full-range-mems-speaker-for-wireless-earbuds/
-40. audioXpress — xMEMS Skyline 固態 MEMS DynamicVent。等效開孔 1.1 mm²、100 Hz 衰減 25 dB。 [D02] https://audioxpress.com/news/xmems-announces-world-s-first-solid-state-mems-dynamicvent-enabling-active-ambient-control-for-next-generation-tws-and-hearing-aids
-41. Physik Instrumente — Capacitive Sensors。高階奈米定位仍用外部電容式 direct metrology（自感測的反面證據）。 [D02/D21] https://www.physikinstrumente.com/en/expertise/technology/sensor-technologies/capacitive-sensors
+51. TDK — PowerHap `1204H018V060` datasheet（PDF）。12×4×1.8 mm；60 V 下 100 g 質量 5 g(pk)、位移 27 µm。【本輪】 https://product.tdk.com/system/files/dam/doc/product/sw_piezo/haptic/powerhap/data_sheet/20/10/ds/1204h018v060.pdf
+52. TDK 新聞稿 — Mini PowerHap actuators for haptic feedback（0904H014V060 / 1204H018V060）。每次回饋 0.35 或 0.6 mJ、響應 < 1 ms、具感測功能。【本輪】 https://www.tdk-electronics.tdk.com/en/373388/company/press-center/press-releases/press-releases/piezo-actuators-mini-powerhap-actuators-for-haptic-feedback/2517752
+53. DigiKey — PowerHap Development Starter Kit（product highlight）。【本輪，價格未回傳】 https://www.digikey.com/en/product-highlight/t/tdk/powerhap-development-starter-kit
+54. DigiKey — PiezoListen `PHUA3030-049B-00-000` **USD 93.83**。【本輪／未驗證】 https://www.digikey.com/en/products/detail/tdk-corporation/PHUA3030-049B-00-000/10229239
+55. Mouser — `PHUA3030-049B-00-000` **USD 93.42**。【本輪／未驗證】 https://www.mouser.com/ProductDetail/TDK/PHUA3030-049B-00-000
+56. Octopart — `PHUA3030-049B-00-000` 九家通路報價 **USD 78.2353–93.42**。【聚合／未驗證】 https://octopart.com/phua3030-049b-00-000-tdk-102119464
+57. TDK 新聞稿（2019-05-21）— PiezoListen 超薄壓電喇叭。400 Hz–20 kHz、≤24 Vpp 出 80 dB、厚 0.49 mm。【本輪】 https://www.tdk.com/en/news_center/press/20190521_01.html
+58. TDK — PiezoListen 商用型錄 PHU（PDF）。最大 34 W、阻抗 2–100 Ω、PHUA2010/3015/3030/6630。【本輪】 https://product.tdk.com/system/files/dam/doc/product/sw_piezo/speaker/piezolisten/catalog/piezolisten_commercial_phu_en.pdf
 
-### 7.6 微泵 / 馬達 / 可靠度
+### 7.6 Murata（成本地板與微氣泵）
 
-42. Bartels Mikrotechnik — Datasheet mp6 micropumps series（PDF）。**壽命 > 5,000 h**。 [D04] https://bartels-mikrotechnik.de/wp-content/uploads/2025/06/Datasheet-mp6-series.pdf
-43. Bartels Mikrotechnik — The Bartels Pump BP7。**壽命 5,000 h**。 [D04] https://bartels-mikrotechnik.de/product/the-bartels-pump-bp7-piezo-pump/
-44. PMC2975551 — MRI Compatibility of Robot Actuation Techniques: A Comparative Study。Nanomotion 運轉造成中度 SNR 損失、zipper 偽影。 [D15] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2975551/
-45. CTS Corp — Typical Failures for Multilayer Actuators。多數失效為絕緣劣化短路、銀遷移、內電極邊緣應力集中。 [D04] https://www.ctscorp.com/Resources/Blog/Typical-Failures-for-Multilayer-Actuators
-46. APC International — RoHS Exemption for Lead Updates。壓電廠商視角的鉛豁免解讀（行銷文件）。 [D03/D04] https://www.americanpiezo.com/blog/rohs-exemption-for-lead-update/
+59. DigiKey — `CSTCE16M0V53-R0`（16 MHz、內建 15 pF、±0.3%、3.2×1.3×0.9 mm）。**狀態：End of Life，Last Time Buy 2019-09-30**。【本輪】 https://www.digikey.com/en/products/detail/murata-electronics/CSTCE16M0V53-R0/584406
+60. RS Online（AU）— Murata 陶瓷諧振器階梯價 **USD 0.389 (20–740) / 0.380 (760–1480) / 0.374 (1500+)**。【本輪／未驗證】 https://au.rs-online.com/web/p/ceramic-resonators/2166058
+61. LCSC — Murata CERALOCK。**`CSTNE8M00G550000R0` 3,000 顆卷 USD 735 = 0.245/顆；6k–27k = 0.239；30k+ = 0.233**。**本領域成本地板錨點。**【本輪／未驗證】 https://www.lcsc.com/product-detail/Ceramic-Resonators_Murata-Electronics_CSTCE16M0V13C99-R0_Murata-Electronics-CSTCE16M0V13C99-R0_C118038.html
+62. Octopart — `CSTCE20M0V53-R0` 多通路比價頁。【聚合】 https://octopart.com/part/murata/CSTCE20M0V53-R0
+63. Murata — Microblower `MZB1001T02` 產品頁。20×20×1.85 mm、0.7 L/min、1,500 Pa、0.18 W。【本輪】 https://www.murata.com/en-us/products/mechatronics/fluid/overview/lineup/microblower_mzb1001t02
+64. Mouser 托管 — `MZB1001T02` datasheet（2014-04）。10–20 Vpp（abs max 30 Vpp）、24–27 kHz、0–70 °C。【本輪】 https://www.mouser.com/datasheet/2/281/Murata_MZB1001T02_datasheet-1186478.pdf
+65. TTI — `MZB1001T02` 零件頁。**補貨前置期 14 週**（供貨訊號）。【本輪】 https://www.tti.com/content/ttiinc/en/apps/part-detail.html?partsNumber=MZB1001T02&mfgShortname=MUR
 
-### 7.7 離子產生 / 超音波供電（僅專利與論文，無商品）
+### 7.7 壓電微泵
 
-47. Google Patents — `US7821762B2` Piezoelectric transformer type ionizer and neutralization method。指出 2008 年讓與 SMC Corporation（讓與細節未獨立驗證）；同族 `CN101442871B`、`JP2009129673A`。 [D07/D06] https://patents.google.com/patent/US7821762B2/
-48. Google Patents — `US20150049587A1` Full-duplex ultrasonic through-wall communication and power delivery system with frequency tracking。 [D07/D06/D02] https://patents.google.com/patent/US20150049587
-49. MDPI Applied Sciences 8(5), 692 — An Ultrasonic Through-Metal-Wall Power Transfer System with Regulated DC Output。1.045 MHz / 60%、乾耦合 34%、>100 W 實驗室展示。 [D07/D01] https://www.mdpi.com/2076-3417/8/5/692
-50. New Atlas — Ultrasonic data and power transmission through metal（RPI Lawry，63.5 mm 鋼、50 W + 12.4 Mb/s）。 [D16] https://newatlas.com/ultrasonic-data-and-power-transmission-through-metal/18097/
-51. Ultrasonics (2024) — Portable through-metal ultrasonic power transfer using a dry-coupled detachable transmitter（Stevens Institute）。針對耦合劑問題的乾耦合解法。 [D16] https://www.sciencedirect.com/science/article/abs/pii/S0041624X2400101X
+66. DigiKey Marketplace — Bartels Mikrotechnik `mp6 micropump`。**≈ USD 65.65–67，MOQ 10**；現貨 960、在途 1,360（2026-04-25）、前置期 12 週。【本輪／未驗證】 https://www.digikey.com/en/products/detail/bartels-mikrotechnik-gmbh/mp6-micropump/17752892
+67. DistyParts — mp6 micropump（**零售 USD 67／顆**）。【本輪／未驗證】 https://distyparts.com/product/mp6-micropump
+68. Darwin Microfluidics — Bartels BP7 Micropump（歐盟通路）。【本輪，價格未回傳】 https://darwin-microfluidics.com/products/bartels-bp7-micropump/
+69. The Lee Company — LT Series Disc Pump。**> 17,000 h 連續運轉**；270 mbar(g) / −220 mbar(g) / 1.2 L/min。【本輪】 https://www.theleeco.com/product/lt-series-disc-pump/
+70. BusinessWire（2022-10-31）— LEE Ventus Long Life Pump Exceeds **1 Trillion Cycles**。【本輪】 https://www.businesswire.com/news/home/20221031005024/en/LEE-Ventus-Long-Life-Pump-Exceeds-1-Trillion-Cycles
+71. World Pumps — Lee Ventus long life disc pump exceeds 17,000 running hours。【本輪】 https://www.worldpumps.com/content/news/lee-ventus-long-life-disc-pump-exceeds-17-000-running-hours
+72. The Lee Company — Disc Pumps 總覽（LT/BL/HP/XP/US 五系列）。【本輪，價格全需詢價】 https://www.theleeco.com/disc-pumps/
+73. TTP Ventus / The Lee Co — TTP Ventus Acquisition 頁。【本輪】 https://www.ttpventus.com/technology
 
-### 7.8 市場規模（低可信度，僅供參考，不可作決策依據）
+### 7.8 對照組：非壓電高壓模組、隔離變壓器、離子產生器
 
-52. Precedence Research — Cold Plasma Market（2025 USD 3.28B → 2035 USD 12.19B，CAGR 14.03%；常壓段 66%）。 [D10] https://www.precedenceresearch.com/cold-plasma-market
-53. Future Market Report — Piezoelectric Transformers Market（USD 220.5M(2025) → 465.8M(2033)，CAGR 9.8%）。 [D02] https://www.futuremarketreport.com/industry-report/piezoelectric-transformers-market
-54. Verified Market Reports — Piezoelectric Transformers Market。與上者相差達 3 倍的另一組估計。 [D02] https://www.verifiedmarketreports.com/product/piezoelectric-transformers-market/
+74. DigiKey — XP Power `Q101-5`（10 kV / 50 µA / 0.5 W，輸入 0.7–5 V）。【本輪，DigiKey 價格未回傳；前版轉引 USD 420.06】 https://www.digikey.com/en/products/detail/xp-power/Q101-5/5873625
+75. Worldictown — `Q101-5` **USD 365.27**，庫存 2,019 顆。【聚合／未驗證】 https://worldictown.com/productdetail/Q101-5
+76. TRC Electronics — `Q101-5` 產品頁（0.7–5 Vdc in、0–10 kVdc out、5 mA max、0.5 W、3 年保固）。【本輪】 https://www.trcelectronics.com/products/xp-power-q101-5
+77. XP Power — Q Series 產品範圍頁。【本輪】 https://www.xppower.com/product/Q-Series
+78. Advanced Energy（UltraVolt）— MPM Series：100–3000 VDC、最高 1.5 W、12/24 VDC 輸入；全線 0.1 W–250 W、最高 60 kV。**價格不公開。**【本輪】 https://www.advancedenergy.com/en-us/products/dc-dc-conversion-products/high-voltage-boost-(u-v)/microsize-(0-1w-to-6w-up-to-60kv)/mpm-series/
+79. Coilcraft — `HTX7045C` LLC Half-Bridge Transformers（隔離閘驅偏壓電源用）。**繞組間電容低至 0.7 pF；2800 Vrms / 4000 VDC 1 min hipot**。**更正前版「12 kV」之誤。**【本輪】 https://www.coilcraft.com/en-us/products/transformers/power-transformers/power-converter-transformers/htx7045c/
+80. Coilcraft — `HTX7045` Gate Drive Transformer 系列頁。【本輪】 https://www.coilcraft.com/en-us/products/transformers/power-transformers/gate-drive/htx7045/
+81. Amazon — Electrodepot 12V DC Plasma Negative Ion Generator Module。**−9.0 ± 0.5 kV、< 1 W（12 V/20 mA）、≥3,200 萬 ions/cm³**；OEM 端（Yueqing Yilerck）**USD 0.80/顆 @1,000+**。【本輪／未驗證】 https://www.amazon.com/Variable-Density-Plasma-Negative-Generator/dp/B079YZYY11
+82. ContactorDepot — Shopcorp 12VDC Variable Density Plasma Negative Ion Generator Module。【本輪】 https://contactordepot.com/products/variable-density-plasma-negative-ion-generator-12vdc-module-portable-air-ionizer
+83. KEYENCE — 靜電消除器選型（價格）頁。**未能確認 KEYENCE 現售型號是否採用壓電變壓器。**【本輪／查無】 https://www.keyence.com/ss/products/static/static-casestudy/price/
+84. Industrial Controls — SMC `IZS31-1500CP` 離子棒（1500 mm、PNP 輸出、矽電極針）。**是否為壓電式未證實。**【本輪／查無】 https://www.indctl.com/products/smc/izs311500cp/389943
 
-### 7.9 本專案內部來源（本文件的實際資料來源）
+### 7.9 壓電馬達與 PT 供應商
 
-55. `01-pt-power-conversion-sota.md` — STEMINC 價格、PT 功率轉換 SOTA、市場規模。
-56. `02-dual-use-active-passive-concept.md` — 兩用概念家族、xMEMS／Boréas／PowerHap 規格、HEAD 網球拍失敗案例。
-57. `03-materials-manufacturing.md` — 材料與製程成本驅動因子、穿金屬壁效率數字。
-58. `04-reliability-standards-qual.md` — Bartels 壽命、多層致動器失效模式、可靠度標準。
-59. `06-patents-power-and-dualuse.md` — 專利地景、STEMINC RoHS 說法、銅電極成本論證。
-60. `07-patents-nonpower-apps.md` — CeraPlas 結構與專利族、SMC 離子器專利、Iota/Astellas 數字。
-61. `10-hv-plasma-ozone-sterilization.md` — **本文件冷電漿段落的主要來源**：CeraPlas/piezobrush 全部規格、通路、Viromed 交易。
-62. `11-electrostatic-actuators-artificial-muscle.md` — XP Power Q101-5 價格、PT 產業崩塌、ViviTouch 案例。
-63. `15-magnetic-immune-clean.md` — MRI 相容壓電馬達、無磁應用。
-64. `16-isolation-gatedrive-throughwall.md` — 穿金屬壁「零商品化」結論、隔離閘驅競品規格。
-65. `21-drive-control-ic-design.md` — Boréas 產品線與宣稱值、度量陷阱警告、自感測反證。
+85. PiezoMotor — Piezo LEGS Linear `LL06`（6.5 N、16 g、直驅無背隙、次奈米微步）。**價格不公開。**【本輪】 https://piezomotor.com/linear-direct-drive-piezo-actuators/legs-linear-ll06-piezo-motor/
+86. Xeryon — XRT 超音波旋轉平台。**唯一公開價格資訊：每增加一軸 +EUR 300，最多 6 軸。**【本輪】 https://xeryon.com/products/precision-rotation-stages/xrt-ultrasonic-rotation-stage/
+87. PI (Physik Instrumente) — Piezo Motors / Stages / Actuators 總覽。**價格不公開。**【本輪】 https://www.pi-usa.us/en/products/piezo-motors-stages-actuators
+88. Metoree — 3 Piezoelectric Transformer Manufacturers in 2025（Steminc / Analog Devices / TAMURA）。**「Analog Devices」高度可疑，判定為分類雜訊，不採信。**【本輪／未驗證】 https://us.metoree.com/categories/3997/
+89. TAMURA — Piezoelectric Transformers 產品頁（**日系大廠仍在售 PT 的證據**）。【本輪，價格不公開】 https://www.tamuracorp.com/global/products/piezo-ceramics/piezo-transformer/
+90. Micromechatronics — Piezoelectric Transformers and DC-DC Piezo Converters。【本輪，價格不公開】 https://www.mmech.com/transformers
+91. CTS Corp — Multilayer Piezoelectric（含 Noliac 產品線）。【本輪，價格不公開】 https://www.ctscorp.com/Products/Piezoelectric/Multilayer
+
+---
+
+*本文件由本輪 22 次 WebSearch 重建。前一版所有未標來源的斷言已被移除或重新標註。第 5.1、5.10 節為對前版的明確更正，請下游文件同步修正。*
