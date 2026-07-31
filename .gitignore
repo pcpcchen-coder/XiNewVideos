@@ -19,3 +19,6 @@ node_modules/
 
 # Keep finished deliverables tracked:
 #   videos/*/slides, subtitles, video.mp4, video_sub.mp4, thumbnail.jpg
+
+# Claude Code local settings
+.claude/settings.local.json
