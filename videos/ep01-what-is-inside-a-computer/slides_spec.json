@@ -1,0 +1,101 @@
+{
+  "meta": { "episode": "EP01", "series": "陳犀牛科技課", "title": "電腦裡面有什麼？" },
+  "slides": [
+    {
+      "n": 1, "layout": "title", "instructor": "pose_speaking",
+      "kicker": "陳犀牛科技課 · EP01",
+      "badge": "第 1 集",
+      "title": "電腦裡面有什麼？",
+      "subtitle": "跟著陳犀牛，打開主機的黑盒子",
+      "speech": "今天我們當一次電腦醫生！"
+    },
+    {
+      "n": 2, "layout": "flow", "instructor": "serious",
+      "kicker": "總覽 · 五個單元",
+      "title": "電腦的五個單元",
+      "note": "不管電腦是大是小、是新是舊，都一樣",
+      "steps": [
+        { "label": "輸入", "icon": "keyboard", "sub": "把資料送進去" },
+        { "label": "處理", "icon": "cpu", "sub": "CPU 運算" },
+        { "label": "記憶／儲存", "icon": "storage", "sub": "暫存＋倉庫" },
+        { "label": "輸出", "icon": "monitor", "sub": "把結果交出來" }
+      ]
+    },
+    {
+      "n": 3, "layout": "mapping", "instructor": "laugh",
+      "kicker": "核心比喻 · 一間廚房",
+      "title": "把電腦想成一間廚房",
+      "pairs": [
+        { "icon": "ingredient", "k": "食材進來", "v": "輸入" },
+        { "icon": "chef", "k": "廚師料理", "v": "處理 · CPU" },
+        { "icon": "board", "k": "砧板", "v": "記憶體" },
+        { "icon": "fridge", "k": "冰箱", "v": "硬碟" },
+        { "icon": "dish", "k": "上菜", "v": "輸出" }
+      ]
+    },
+    {
+      "n": 4, "layout": "spotlight", "instructor": "confident",
+      "kicker": "核心 · 大腦",
+      "title": "CPU：電腦的大腦",
+      "centerLabel": "CPU",
+      "centerSub": "廚房裡的主廚 · 一人包辦所有計算與指令",
+      "statBig": "數十億次",
+      "statUnit": "每 秒 運 算",
+      "compareLine": "比全世界最強的心算高手，還要快上好幾億倍"
+    },
+    {
+      "n": 5, "layout": "compare", "instructor": "thinking",
+      "kicker": "核心 · 短期記憶",
+      "title": "記憶體：廚師的砧板",
+      "left":  { "tag": "開機工作中", "head": "大砧板", "body": "正在用的資料攤滿桌；砧板越大，能同時做的菜越多", "tone": "good" },
+      "right": { "tag": "一 關 機", "head": "全部清空", "body": "砧板上的東西通通消失 — 所以重開機常常會變順", "tone": "danger" }
+    },
+    {
+      "n": 6, "layout": "compare", "instructor": "smile",
+      "kicker": "核心 · 長期倉庫",
+      "title": "硬碟：你的大倉庫",
+      "left":  { "tag": "傳統硬碟 HDD", "head": "大冰箱", "body": "照片 · 遊戲 · 作業，關機也不會不見", "tone": "neutral" },
+      "right": { "tag": "固態硬碟 SSD", "head": "開放層架", "body": "一樣的東西，伸手就拿到 — 快很多", "tone": "good", "speed": true }
+    },
+    {
+      "n": 7, "layout": "network", "instructor": "inspired",
+      "kicker": "連接 · 主機板",
+      "title": "主機板：資料的高速公路",
+      "nodes": ["CPU", "記憶體", "硬碟"],
+      "caption": "所有零件都插在它身上；資料在三座城市之間快速奔跑，一秒都不塞車"
+    },
+    {
+      "n": 8, "layout": "trio", "instructor": "laugh",
+      "kicker": "三位配角",
+      "title": "主角之外，還有三位配角",
+      "cards": [
+        { "icon": "gpu",   "name": "顯示卡", "role": "畫圖的第二個大腦", "note": "遊戲 · 人工智慧" },
+        { "icon": "power", "name": "電源供應器", "role": "電腦的心臟", "note": "穩穩供電給每個零件" },
+        { "icon": "fan",   "name": "風扇", "role": "電腦的冷氣", "note": "工作會發燙 · 負責降溫" }
+      ]
+    },
+    {
+      "n": 9, "layout": "twocol", "instructor": "surprised",
+      "kicker": "延伸 · 手機",
+      "title": "手機，其實一模一樣",
+      "colLeft": "桌上型電腦",
+      "colRight": "手機",
+      "rows": [
+        { "u": "輸入／輸出", "l": "鍵盤滑鼠 · 螢幕", "r": "觸控螢幕（合而為一）" },
+        { "u": "處理",       "l": "CPU",            "r": "處理器（小小大腦）" },
+        { "u": "記憶",       "l": "記憶體",          "r": "記憶體" },
+        { "u": "儲存",       "l": "硬碟",            "r": "儲存空間" }
+      ],
+      "caption": "只是把全部零件縮小，塞進薄薄的機殼裡，隨身帶著走"
+    },
+    {
+      "n": 10, "layout": "summary", "instructor": "confident",
+      "kicker": "複習 & 下集預告",
+      "title": "五個單元，記住了嗎？",
+      "recap": ["輸入", "處理", "記憶", "儲存", "輸出"],
+      "teaserLabel": "下一集",
+      "teaser": "電腦只懂 0 和 1",
+      "signoff": "我是陳犀牛 · 保持好奇，我們下次再見！"
+    }
+  ]
+}

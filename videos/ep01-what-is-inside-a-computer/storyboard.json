@@ -1,0 +1,12 @@
+[
+  {"slide": 1,  "layout": "title",    "visual": "開場",     "instructor": "pose_speaking", "what": "大標題〈電腦裡面有什麼？〉＋副標＋第 1 集徽章＋陳犀牛演講姿勢登場"},
+  {"slide": 2,  "layout": "flow",     "visual": "流程圖",   "instructor": "serious",   "what": "輸入→處理→記憶／儲存→輸出 五大單元一條龍，chip 化"},
+  {"slide": 3,  "layout": "mapping",  "visual": "比喻場景", "instructor": "laugh",     "what": "廚房比喻：食材=輸入、廚師=處理、砧板=記憶體、冰箱=硬碟、上菜=輸出"},
+  {"slide": 4,  "layout": "spotlight","visual": "焦點",     "instructor": "confident", "what": "CPU 晶片為主角，閃電高速；標示每秒數十億次運算"},
+  {"slide": 5,  "layout": "compare",  "visual": "對比圖",   "instructor": "thinking",  "what": "記憶體＝砧板：開機(食材滿滿) vs 關機(清空)"},
+  {"slide": 6,  "layout": "compare",  "visual": "對比圖",   "instructor": "smile",     "what": "硬碟：傳統硬碟(冰箱) vs 固態硬碟(開放層架, 快)"},
+  {"slide": 7,  "layout": "network",  "visual": "流程圖",   "instructor": "inspired",  "what": "主機板高速公路連接 CPU／記憶體／硬碟三座城市，資料奔跑"},
+  {"slide": 8,  "layout": "trio",     "visual": "三格",     "instructor": "laugh",     "what": "三配角：顯示卡(畫家)、電源(心臟)、風扇(冷氣)"},
+  {"slide": 9,  "layout": "twocol",   "visual": "對比圖",   "instructor": "surprised", "what": "桌機 vs 手機，五單元一一對應"},
+  {"slide": 10, "layout": "summary",  "visual": "總結",     "instructor": "confident", "what": "五單元總複習＋下集預告(0 和 1)＋陳犀牛簽名收尾"}
+]

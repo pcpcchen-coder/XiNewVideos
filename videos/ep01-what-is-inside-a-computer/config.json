@@ -1,0 +1,28 @@
+{
+  "episode": "ep01",
+  "title": "電腦裡面有什麼？",
+  "subtitle": "跟著陳犀牛，打開主機的黑盒子",
+  "series": "陳犀牛科技課 · 給七年級的電腦與 AI 課",
+  "instructor": "陳犀牛 Chen XiNew",
+  "video": { "width": 1920, "height": 1080, "fps": 30, "audioBitrate": "192k" },
+  "tts": {
+    "engine": "edge-tts",
+    "voice": "zh-TW-YunJheNeural",
+    "rate": "-4%",
+    "pitch": "-2Hz",
+    "note": "沉穩、親切的台灣男聲，貼近陳犀牛人設。edge-tts 後端主機在本沙盒被 egress 政策封鎖(403)，需在可連線環境或本機執行 toolkit/tts.py。"
+  },
+  "timing": {
+    "mode": "estimated",
+    "charsPerSecond": 4.3,
+    "minSlideSeconds": 7.0,
+    "tailSeconds": 0.8,
+    "note": "mode=estimated 時，投影片時長由旁白字數推算(無語音)；mode=audio 時改用實際配音長度。"
+  },
+  "subtitles": { "maxCharsPerLine": 18, "format": "srt", "burn": false, "delivery": "youtube-sidecar" },
+  "tools": {
+    "ffmpeg": "ffmpeg",
+    "fontFamily": "Noto Sans TC",
+    "renderer": "playwright-chromium"
+  }
+}
